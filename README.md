@@ -1,6 +1,8 @@
 # metadata_fetcher_by_DOI
 
 DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンスを取得し、このISSNからSherpa Serviceを検索して論文掲載誌のOAポリシーが記載されたURLを取得します。
+あわせて、「日本の学協会の著作権ポリシー確認ツール」のREST APIへのリンクを生成します。
+
 機関リポジトリの登録業務への活用を期待して作成しました。
 
 動作にはMicrosoft ExcelとPower Queryを使用しています。
@@ -22,6 +24,7 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
 3. メニューの「クエリ」を開き「更新」を押します。
 4. 入力したDOIを元に、UnpaywallをSherpa Servicesを検索し以下の情報を取得します。
 5. シート「Sherpa」および「get Unpaywall」にそれぞれから取得したデータが収められています。これは動作確認用です。
+6. Unpaywallに登録されていないDOI、またはISSNがSherpa Serviceでヒットしない場合はエラーとなります。
 
 |DOI|uri|UnPayWall.issn|UnPayWall.journal_name|UnPayWall.article title|UnPayWall.is_os|UnPayWall.oa_status|UnPayWall.oa_location.license|scpj|
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|
@@ -38,6 +41,11 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
 - Sherpa Services
   -  Metadata Schema : https://www.sherpa.ac.uk/api/metadata-schema.html
   -  Object Retrieval By ID API : https://v2.sherpa.ac.uk/api/object-retrieval-by-id.html
+
+## To Do
+- まとめて複数のDOIを検索したい。
+- エラーチェックを組み込みたい。
+- もうすこしコードをきれいにしたい。
 
 ## Author
 Takanori Hayashi
