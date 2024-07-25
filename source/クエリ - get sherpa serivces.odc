@@ -1,0 +1,105 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/x-ms-odc; charset=utf-8">
+<meta name=ProgId content=ODC.Database>
+<meta name=SourceType content=OLEDB>
+<title>クエリ - get sherpa serivces</title>
+<xml id=docprops><o:DocumentProperties
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns="http://www.w3.org/TR/REC-html40">
+  <o:Description>ブック内の 'get sherpa serivces' クエリへの接続です。</o:Description>
+  <o:Name>クエリ - get sherpa serivces</o:Name>
+ </o:DocumentProperties>
+</xml><xml id=msodc><odc:OfficeDataConnection
+  xmlns:odc="urn:schemas-microsoft-com:office:odc"
+  xmlns="http://www.w3.org/TR/REC-html40">
+  <odc:PowerQueryConnection odc:Type="OLEDB">
+   <odc:ConnectionString>Provider=Microsoft.Mashup.OleDb.1;Data Source=$Workbook$;Location=&quot;get sherpa serivces&quot;;Extended Properties=&quot;&quot;</odc:ConnectionString>
+   <odc:CommandType>SQL</odc:CommandType>
+   <odc:CommandText>SELECT * FROM [get sherpa serivces]</odc:CommandText>
+  </odc:PowerQueryConnection>
+  <odc:PowerQueryMashupData>&lt;Mashup xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://schemas.microsoft.com/DataMashup&quot;&gt;&lt;Client&gt;EXCEL&lt;/Client&gt;&lt;Version&gt;2.130.527.0&lt;/Version&gt;&lt;MinVersion&gt;2.21.0.0&lt;/MinVersion&gt;&lt;Culture&gt;ja-JP&lt;/Culture&gt;&lt;SafeCombine&gt;true&lt;/SafeCombine&gt;&lt;Items&gt;&lt;Query Name=&quot;get sherpa serivces&quot;&gt;&lt;Formula&gt;&lt;![CDATA[let&#13;&#10;    // DOIのテーブルにあるDOIを取得&#13;&#10;    ソース = Excel.CurrentWorkbook(){[Name=&quot;DOI&quot;]}[Content],&#13;&#10;    DOItextType = Table.TransformColumnTypes(ソース,{{&quot;DOI&quot;, type text}}),&#13;&#10;    SourceDOI = DOItextType{0}[DOI],&#13;&#10;&#13;&#10;    // ISSNを get UnPayWallのテーブルから取得&#13;&#10;    unpaywalltable = Excel.CurrentWorkbook(){[Name=&quot;get_UnPayWall&quot;]}[Content],&#13;&#10;    list = unpaywalltable[issn],&#13;&#10;    sourceissn = list{0},&#13;&#10;    // sherpa seriveのAPIからJSONを取得&#13;&#10;    WebSource = Json.Document(Web.Contents(&quot;https://v2.sherpa.ac.uk/cgi&quot; , &#13;&#10;        [&#13;&#10;            RelativePath=&quot;retrieve_by_id/cgi/retrieve_by_id&quot;, &#13;&#10;            ApiKeyName = &quot;api-key&quot;,&#13;&#10;            Query =  [ #&quot;item-type&quot; = &quot;publication&quot;, format = &quot;Json&quot; , identifier = sourceissn ]&#13;&#10;        ]&#13;&#10;    )),&#13;&#10;   // uriが取得できる階層まで展開&#13;&#10;    テーブルに変換済み = Record.ToTable(WebSource),&#13;&#10;    #&quot;展開された Value&quot; = Table.ExpandListColumn(テーブルに変換済み, &quot;Value&quot;),&#13;&#10;    Value = #&quot;展開された Value&quot;{0}[Value],&#13;&#10;    system_metadata = Value[system_metadata],&#13;&#10;    テーブルに変換済み1 = Record.ToTable(system_metadata),&#13;&#10;    フィルターされた行 = Table.SelectRows(テーブルに変換済み1, each ([Name] = &quot;uri&quot;)),&#13;&#10;    転置されたテーブル = Table.Transpose(フィルターされた行),&#13;&#10;    昇格されたヘッダー数 = Table.PromoteHeaders(転置されたテーブル, [PromoteAllScalars=true]),&#13;&#10;    変更された型 = Table.TransformColumnTypes(昇格されたヘッダー数,{{&quot;uri&quot;, type text}}),&#13;&#10;    // マージ用のキーにするためDOIを先頭に追加&#13;&#10;    追加されたカスタム = Table.AddColumn(変更された型, &quot;DOI&quot;, each SourceDOI),&#13;&#10;    並べ替えられた列 = Table.ReorderColumns(追加されたカスタム,{&quot;DOI&quot;, &quot;uri&quot;}),&#13;&#10;    // SCPJのURLを生成して列に追加&#13;&#10;    SCPJ_baseurl = &quot;https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php?mode=getPolicyFromIDs&amp;ids=&quot;,&#13;&#10;    SCPJ_url     = Text.Combine({SCPJ_baseurl, sourceissn}),&#13;&#10;    追加されたカスタム2 = Table.AddColumn(並べ替えられた列, &quot;scpj&quot;, each SCPJ_url),&#13;&#10;    // get UnPayWall のテーブルとマージ、列名を変更&#13;&#10;    マージされたクエリ数 = Table.NestedJoin(追加されたカスタム2, {&quot;DOI&quot;}, #&quot;get UnPayWall&quot;, {&quot;DOI&quot;}, &quot;get UnPayWall&quot;, JoinKind.LeftOuter),&#13;&#10;    #&quot;展開された get UnPayWall1&quot; = Table.ExpandTableColumn(マージされたクエリ数, &quot;get UnPayWall&quot;, &#13;&#10;        {&quot;issn&quot;,           &quot;journal_name&quot;,          &quot;article title&quot;,            &quot;is_oa&quot;,           &quot;oa_status&quot;,           &quot;oa_location.license&quot;           }, &#13;&#10;        {&quot;UnPayWall.issn&quot;, &quot;UnPayWall.journal_name&quot;, &quot;UnPayWall.article title&quot;, &quot;UnPayWall.is_oa&quot;, &quot;UnPayWall.oa_status&quot;, &quot;UnPayWall.oa_location.license&quot; }),&#13;&#10;    // 順を入れ替えてSCPJを最後の列に&#13;&#10;    並べ替えられた列1 = Table.ReorderColumns(#&quot;展開された get UnPayWall1&quot;,{&quot;DOI&quot;, &quot;uri&quot;, &quot;UnPayWall.issn&quot;, &quot;UnPayWall.journal_name&quot;, &quot;UnPayWall.article title&quot;, &quot;UnPayWall.is_oa&quot;, &quot;UnPayWall.oa_status&quot;, &quot;UnPayWall.oa_location.license&quot;, &quot;scpj&quot;}),&#13;&#10;    // 型を変更&#13;&#10;    変更された型1 = Table.TransformColumnTypes(並べ替えられた列1,{{&quot;DOI&quot;, type text}, {&quot;UnPayWall.issn&quot;, type text}, {&quot;UnPayWall.journal_name&quot;, type text}, {&quot;UnPayWall.article title&quot;, type text}, {&quot;UnPayWall.is_oa&quot;, type logical}, {&quot;UnPayWall.oa_status&quot;, type text}, {&quot;UnPayWall.oa_location.license&quot;, type text}, {&quot;scpj&quot;, type text}})&#13;&#10;in&#13;&#10;    変更された型1]]&gt;&lt;/Formula&gt;&lt;IsParameterQuery xsi:nil=&quot;true&quot; /&gt;&lt;IsDirectQuery xsi:nil=&quot;true&quot; /&gt;&lt;/Query&gt;&lt;Query Name=&quot;get UnPayWall&quot;&gt;&lt;Formula&gt;&lt;![CDATA[let&#13;&#10;    // DOIのテーブルからDOIを取得&#13;&#10;    ソース = Excel.CurrentWorkbook(){[Name=&quot;DOI&quot;]}[Content],&#13;&#10;    変更された型 = Table.TransformColumnTypes(ソース,{{&quot;DOI&quot;, type text}}),&#13;&#10;    SourceDOI = 変更された型{0}[DOI],&#13;&#10;    // UnPayWallからJSONを取得&#13;&#10;    #&quot;get UnPayWall&quot; = let&#13;&#10;    unpaywall = Web.Contents(&quot;https://api.unpaywall.org/v2&quot;, &#13;&#10;        [&#13;&#10;            RelativePath = SourceDOI , ApiKeyName = &quot;email&quot;&#13;&#10;        ]),&#13;&#10;    // Read the file into a list of lines&#13;&#10;    Source = Table.FromColumns({Lines.FromBinary(unpaywall, null, null)}),&#13;&#10;    // Transform each line using Json.Document&#13;&#10;    #&quot;Transformed Column&quot; = Table.TransformColumns(Source, {&quot;Column1&quot;, Json.Document}),&#13;&#10;    // DOI, ISSN, Journal Name, Article title, is_oa, oa Status, Best oa Locationの値を取り出してテーブルにセット&#13;&#10;    #&quot;展開された Column1&quot; = Table.ExpandRecordColumn(&#13;&#10;        #&quot;Transformed Column&quot;, &quot;Column1&quot;, &#13;&#10;        {&quot;doi&quot;, &quot;journal_issn_l&quot;, &quot;journal_name&quot;, &quot;title&quot;,         &quot;is_oa&quot;, &quot;oa_status&quot;, &quot;best_oa_location&quot;},&#13;&#10;        {&quot;DOI&quot;, &quot;issn&quot;,           &quot;journal_name&quot;, &quot;article title&quot;, &quot;is_oa&quot;, &quot;oa_status&quot;, &quot;Column1.best_oa_location&quot;}&#13;&#10;        ),&#13;&#10;    // Column1.best_oa_locationからのoa_location.licenseを取り出してテーブルに追加&#13;&#10;    #&quot;展開された Column1.best_oa_location&quot; = Table.ExpandRecordColumn(&#13;&#10;        #&quot;展開された Column1&quot;, &quot;Column1.best_oa_location&quot;, &#13;&#10;        {&quot;license&quot;}, &#13;&#10;        {&quot;oa_location.license&quot;}&#13;&#10;        )&#13;&#10;in&#13;&#10;    #&quot;展開された Column1.best_oa_location&quot;&#13;&#10;in&#13;&#10;    #&quot;get UnPayWall&quot;]]&gt;&lt;/Formula&gt;&lt;IsParameterQuery xsi:nil=&quot;true&quot; /&gt;&lt;IsDirectQuery xsi:nil=&quot;true&quot; /&gt;&lt;/Query&gt;&lt;/Items&gt;&lt;/Mashup&gt;</odc:PowerQueryMashupData>
+ </odc:OfficeDataConnection>
+</xml>
+<style>
+<!--
+    .ODCDataSource
+    {
+    behavior: url(dataconn.htc);
+    }
+-->
+</style>
+ 
+</head>
+
+<body onload='init()' scroll=no leftmargin=0 topmargin=0 rightmargin=0 style='border: 0px'>
+<table style='border: solid 1px threedface; height: 100%; width: 100%' cellpadding=0 cellspacing=0 width='100%'> 
+  <tr> 
+    <td id=tdName style='font-family:arial; font-size:medium; padding: 3px; background-color: threedface'> 
+      &nbsp; 
+    </td> 
+     <td id=tdTableDropdown style='padding: 3px; background-color: threedface; vertical-align: top; padding-bottom: 3px'>
+
+      &nbsp; 
+    </td> 
+  </tr> 
+  <tr> 
+    <td id=tdDesc colspan='2' style='border-bottom: 1px threedshadow solid; font-family: Arial; font-size: 1pt; padding: 2px; background-color: threedface'>
+
+      &nbsp; 
+    </td> 
+  </tr> 
+  <tr> 
+    <td colspan='2' style='height: 100%; padding-bottom: 4px; border-top: 1px threedhighlight solid;'> 
+      <div id='pt' style='height: 100%' class='ODCDataSource'></div> 
+    </td> 
+  </tr> 
+</table> 
+
+  
+<script language='javascript'> 
+
+function init() { 
+  var sName, sDescription; 
+  var i, j; 
+  
+  try { 
+    sName = unescape(location.href) 
+  
+    i = sName.lastIndexOf(".") 
+    if (i>=0) { sName = sName.substring(1, i); } 
+  
+    i = sName.lastIndexOf("/") 
+    if (i>=0) { sName = sName.substring(i+1, sName.length); } 
+
+    document.title = sName; 
+    document.getElementById("tdName").innerText = sName; 
+
+    sDescription = document.getElementById("docprops").innerHTML; 
+  
+    i = sDescription.indexOf("escription>") 
+    if (i>=0) { j = sDescription.indexOf("escription>", i + 11); } 
+
+    if (i>=0 && j >= 0) { 
+      j = sDescription.lastIndexOf("</", j); 
+
+      if (j>=0) { 
+          sDescription = sDescription.substring(i+11, j); 
+        if (sDescription != "") { 
+            document.getElementById("tdDesc").style.fontSize="x-small"; 
+          document.getElementById("tdDesc").innerHTML = sDescription; 
+          } 
+        } 
+      } 
+    } 
+  catch(e) { 
+
+    } 
+  } 
+</script> 
+
+</body> 
+ 
+</html>
