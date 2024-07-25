@@ -45,6 +45,12 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
   -  Metadata Schema : https://www.sherpa.ac.uk/api/metadata-schema.html
   -  Object Retrieval By ID API : https://v2.sherpa.ac.uk/api/object-retrieval-by-id.html
 
+## Update
+
+ - 2024/07/25
+   -「Formula.Firewall: クエリ ～ は他のクエリまたはステップを参照しているため、データ ソースに直接アクセスできません。このデータの組み合わせを再構築してください。」の表示がないようクエリをまとめるなど修正しました。
+   - クエリをOffice データ接続ファイル形式で出力し /source におきました。テキスト形式でも置いています。
+
 ## To Do
 - まとめて複数のDOIを検索したい。
 - エラーチェックを組み込みたい。
