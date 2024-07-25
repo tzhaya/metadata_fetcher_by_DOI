@@ -25,7 +25,7 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
 1. シート「DOI」のA2セルに、検索したい文献のDOIを入力します。形式は 10.1038/s41587-024-02248-6 のようにしてください。
 2. シート「DOI」のC2セルあたりにフォーカスを移動します。
 3. メニューの「クエリ」を開き「更新」を押します。
-4. 入力したDOIを元に、Unpaywallを検索してISSNを、このISSNからSherpa Servicesを検索して以下の情報を取得します。
+4. 入力したDOIを元に、Unpaywallを検索してISSNを、このISSNからSherpa Servicesを検索して以下の情報を取得します。項目名に UnPayWall とあるものがUnpaywallから取得したデータです。
 5. シート「get Unpaywall」にUnpaywallから取得したデータが収められています。これは動作確認用です。
 6. Unpaywallに登録されていないDOI、またはISSNがSherpa Serviceでヒットしない場合はエラーとなります。
 
