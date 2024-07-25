@@ -17,13 +17,16 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
   - または、「クエリ」→「編集」の「データソース設定」で設定できます。
 - Unpaywallはメールアドレス、Sherpa Servicesは事前に取得したAPIキーで設定します。
 ![スクリーンショット 2024-07-15 205339_2](https://github.com/user-attachments/assets/8413275e-9070-4bd9-81f6-b82bddf73f6a)
+- 初回の起動時に「プライバシーレベル」を設定する必要があります。「パブリック」に設定します。
+![スクリーンショット 2024-07-25 135620](https://github.com/user-attachments/assets/0a4daeac-559e-4c9a-9897-dcf3494bbfce)
+
 
 ## Usage
 1. シート「DOI」のA2セルに、検索したい文献のDOIを入力します。形式は 10.1038/s41587-024-02248-6 のようにしてください。
 2. シート「DOI」のC2セルあたりにフォーカスを移動します。
 3. メニューの「クエリ」を開き「更新」を押します。
-4. 入力したDOIを元に、UnpaywallをSherpa Servicesを検索し以下の情報を取得します。
-5. シート「Sherpa」および「get Unpaywall」にそれぞれから取得したデータが収められています。これは動作確認用です。
+4. 入力したDOIを元に、Unpaywallを検索してISSNを、このISSNからSherpa Servicesを検索して以下の情報を取得します。
+5. シート「get Unpaywall」にUnpaywallから取得したデータが収められています。これは動作確認用です。
 6. Unpaywallに登録されていないDOI、またはISSNがSherpa Serviceでヒットしない場合はエラーとなります。
 
 |DOI|uri|UnPayWall.issn|UnPayWall.journal_name|UnPayWall.article title|UnPayWall.is_os|UnPayWall.oa_status|UnPayWall.oa_location.license|scpj|
