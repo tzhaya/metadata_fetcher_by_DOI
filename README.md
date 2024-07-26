@@ -23,14 +23,13 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
 
 ## Usage
 1. シート「DOI」のA2セルに、検索したい文献のDOIを入力します。形式は 10.1038/s41587-024-02248-6 のようにしてください。
-2. シート「DOI」のC2セルあたりにフォーカスを移動します。
-3. Excelメニューの「クエリ」を開き「クエリと接続」にある「クエリと接続」を押します。
+2. Excelメニューの「クエリ」を開き「クエリと接続」にある「クエリと接続」を押します。
 ![スクリーンショット 2024-07-26 084902](https://github.com/user-attachments/assets/6af7a8bb-1ddc-4bf7-8775-1ecfb0a91596)
-4. 「クエリと接続」の「get UnPayWall」「get sherpa service」の順に更新します。
+3. 「クエリと接続」の「get UnPayWall」「get sherpa service」の順に更新します。
 ![スクリーンショット 2024-07-26 085054](https://github.com/user-attachments/assets/0e9d699f-8eb1-4ec6-9089-3d8592fd0eda)
-5. 入力したDOIを元に、Unpaywallを検索してISSNを、このISSNからSherpa Servicesを検索して以下の情報を取得します。項目名に UnPayWall とあるものがUnpaywallから取得したデータです。
-6. シート「get Unpaywall」にUnpaywallから取得したデータが収められています。これは動作確認用です。
-7. Unpaywallに登録されていないDOI、またはISSNがSherpa Serviceでヒットしない場合はエラーとなります。
+4. 入力したDOIを元に、Unpaywallを検索してISSNを、このISSNからSherpa Servicesを検索して以下の情報を取得します。項目名に UnPayWall とあるものがUnpaywallから取得したデータです。
+5. シート「get Unpaywall」にUnpaywallから取得したデータが収められています。これは動作確認用です。
+6. Unpaywallに登録されていないDOI、またはISSNがSherpa Serviceでヒットしない場合はエラーとなります。
 
 |DOI|uri|UnPayWall.issn|UnPayWall.journal_name|UnPayWall.article title|UnPayWall.is_os|UnPayWall.oa_status|UnPayWall.oa_location.license|scpj|
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|
