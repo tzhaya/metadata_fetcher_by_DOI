@@ -31,8 +31,7 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
 |DOI|uri|UnPayWall.issn|UnPayWall.journal_name|UnPayWall.article title|UnPayWall.is_os|UnPayWall.oa_status|UnPayWall.oa_location.license|Unpaywall.oa_location.url|Unpaywall.oa_location.url_for_pdf|SPCJ|
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|
 |DOI|OAポリシー記載のURL(Sherpa Service)|論文掲載誌のISSN(Unpaywall)|掲載誌名(Unpaywall)|論題(Unpaywall)|DOIの先の論文がOAか否か（OAなら TRUE）(Unpaywall)|OAのステータス（gold, hybrid, bronze, green or closed）(Unpaywall)|DOIの先の論文がOAの場合のライセンス(Unpaywall)|OAの場合のDOI解決先URL(Unpaywall)|OAの場合のPDFのURL(Unpaywall)|「日本の学協会の著作権ポリシー確認ツール」(https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php) へのリンク|
-|10.1038/s41587-024-02248-6|https://v2.sherpa.ac.uk/id/publication/1643|1087-0156|Nature Biotechnology|High-throughput discovery of MHC class I- and II-restricted T cell epitopes using synthetic cellular circuits|TRUE|hybrid|cc-by|https://doi.org/10.1038/s41587-024-02248-6
-| |https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php?mode=getPolicyFromIDs&ids=1087-0156|
+|10.1038/s41587-024-02248-6|https://v2.sherpa.ac.uk/id/publication/1643|1087-0156|Nature Biotechnology|High-throughput discovery of MHC class I- and II-restricted T cell epitopes using synthetic cellular circuits|TRUE|hybrid|cc-by|https://doi.org/10.1038/s41587-024-02248-6| |https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php?mode=getPolicyFromIDs&ids=1087-0156|
 
 ## etc.
 - その他の項目の取得が必要な場合は、適宜クエリを書き換えてご利用ください。
