@@ -57,9 +57,9 @@ DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンス
    - クエリをOffice データ接続ファイル形式で出力し /source におきました。テキスト形式でも置いています。
 
 ## To Do
-- まとめて複数のDOIを検索したい。
-- エラーチェックを組み込みたい。
-- もうすこしコードをきれいにしたい。
+- ~~まとめて複数のDOIを検索したい~~ [issue #2](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/2) で対応. 複数行で検索できます。
+- ~~エラーチェックを組み込みたい~~[issue #3](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/3) で対応。存在しないDOIはnullとしてテーブルに出力します。
+- ~~もうすこしコードをきれいにしたい~~[issue #2](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/2) で対応。
 
 ## Author
 Takanori Hayashi
