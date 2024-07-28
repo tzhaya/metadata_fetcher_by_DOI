@@ -1,0 +1,7 @@
+(ISSN as text) =>
+    let
+        SCPJ_baseurl = "https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php?mode=getPolicyFromIDs&ids=",
+        SCPJ_url     = Text.Combine({SCPJ_baseurl, ISSN})
+    in
+        if ISSN = null then null else 
+        SCPJ_url

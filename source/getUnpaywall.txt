@@ -1,31 +1,25 @@
-let
-    // DOIのテーブルからDOIを取得
-    ソース = Excel.CurrentWorkbook(){[Name="DOI"]}[Content],
-    変更された型 = Table.TransformColumnTypes(ソース,{{"DOI", type text}}),
-    SourceDOI = 変更された型{0}[DOI],
-    // UnPayWallからJSONを取得
-    #"get UnPayWall" = let
-    unpaywall = Web.Contents("https://api.unpaywall.org/v2", 
-        [
-            RelativePath = SourceDOI , ApiKeyName = "email"
-        ]),
-    // Read the file into a list of lines
-    Source = Table.FromColumns({Lines.FromBinary(unpaywall, null, null)}),
-    // Transform each line using Json.Document
-    #"Transformed Column" = Table.TransformColumns(Source, {"Column1", Json.Document}),
-    // DOI, ISSN, Journal Name, Article title, is_oa, oa Status, Best oa Locationの値を取り出してテーブルにセット
-    #"展開された Column1" = Table.ExpandRecordColumn(
+(DOI as text) =>
+    let
+        unpaywall = Web.Contents("https://api.unpaywall.org/v2", 
+            [ RelativePath = DOI , ApiKeyName = "email" , ManualStatusHandling={400, 404, 500} ]),
+        // ステータスコードのチェック
+        status = Value.Metadata(unpaywall)[Response.Status], 
+        unpaywallSource = Table.FromColumns({Lines.FromBinary(unpaywall, null, null)}),
+        // Transform each line using Json.Document
+        #"Transformed Column" = Table.TransformColumns(unpaywallSource, {"Column1", Json.Document}),
+        // DOI, ISSN, Journal Name, Article title, is_oa, oa Status, Best oa Locationの値を取り出してテーブルにセット
+        #"展開された Column1" = Table.ExpandRecordColumn(
         #"Transformed Column", "Column1", 
         {"doi", "journal_issn_l", "journal_name", "title",         "is_oa", "oa_status", "best_oa_location"},
         {"DOI", "issn",           "journal_name", "article title", "is_oa", "oa_status", "Column1.best_oa_location"}
         ),
-    // Column1.best_oa_locationからのoa_location.licenseを取り出してテーブルに追加
-    #"展開された Column1.best_oa_location" = Table.ExpandRecordColumn(
-        #"展開された Column1", "Column1.best_oa_location", 
-        {"license"}, 
-        {"oa_location.license"}
-        )
-in
-    #"展開された Column1.best_oa_location"
-in
-    #"get UnPayWall"
+        // Column1.best_oa_locationからのoa_location.license,oa_uri,url_for_pdfを取り出してテーブルに追加
+        #"unpaywalldata" = Table.ExpandRecordColumn(
+            #"展開された Column1", "Column1.best_oa_location", 
+            {"license",            "url",              "url_for_pdf"}, 
+            {"oa_location.license","oa_location.url",  "oa_location.url_for_pdf"}
+            )
+    in
+        // 404エラーならnullを返す
+        if status = 404 then null else 
+        #"unpaywalldata"
