@@ -15,30 +15,47 @@ let
             "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", "Unpaywall.is_oa", "Unpaywall.oa_status", 
          "Unpaywall.oa_location.license","Unpaywall.oa_location.url",  "Unpaywall.oa_location.url_for_pdf"
          }),
-    // カスタム関数 getSCPJurlにISSNを渡してURLを取得、列SCPJとして追加する
-    呼び出されたカスタム関数1 = Table.AddColumn(#"展開された getUnpaywall", "SCPJ", each getSCPJurl([Unpaywall.issn])),
-    // エラーは N/A に置換
-    置換されたエラー1 = Table.ReplaceErrorValues(呼び出されたカスタム関数1, {{"SCPJ", "N/A"}}),
+    // // カスタム関数 getSCPJurlにISSNを渡してURLを取得、列SCPJとして追加する
+    // 呼び出されたカスタム関数1 = Table.AddColumn(#"展開された getUnpaywall", "SCPJ", each getSCPJurl([Unpaywall.issn])),
+    //// エラーは N/A に置換
+    // 置換されたエラー1 = Table.ReplaceErrorValues(呼び出されたカスタム関数1, {{"SCPJ", "N/A"}}),
     // カスタム関数 getSherpaにISSNを渡してデータ（URL)を取得、列uriとして追加する
-    呼び出されたカスタム関数2 = Table.AddColumn(置換されたエラー1, "uri", each getSherpa([Unpaywall.issn])),
+    // 呼び出されたカスタム関数2 = Table.AddColumn(置換されたエラー1, "uri", each getSherpa([Unpaywall.issn])),
     // エラーは N/A に置換
-    置換されたエラー2 = Table.ReplaceErrorValues(呼び出されたカスタム関数2, {{"uri", "N/A"}}),
+    // 置換されたエラー2 = Table.ReplaceErrorValues(呼び出されたカスタム関数2, {{"uri", "N/A"}}),
     // 列を並び替えて uri を2列目に
-    並べ替えられた列 = Table.ReorderColumns(置換されたエラー2,
+    // 並べ替えられた列 = Table.ReorderColumns(置換されたエラー2,
+    並べ替えられた列 = Table.ReorderColumns(#"展開された getUnpaywall",
         {
-            "DOI", "uri", "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", 
+        //    "DOI", "uri", "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", 
+            "DOI", "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", 
          "Unpaywall.is_oa", "Unpaywall.oa_status", "Unpaywall.oa_location.license", "Unpaywall.oa_location.url", 
-         "Unpaywall.oa_location.url_for_pdf","SCPJ"
+         //"Unpaywall.oa_location.url_for_pdf","SCPJ"
+         "Unpaywall.oa_location.url_for_pdf"
          }),
     // 型を変換
     変更された型1 = Table.TransformColumnTypes(並べ替えられた列,
     {
-        {"uri", type text}, {"Unpaywall.DOI", type text}, {"Unpaywall.issn", type text}, {"Unpaywall.journal_name", type text},
+    //    {"uri", type text}, {"Unpaywall.DOI", type text}, {"Unpaywall.issn", type text}, {"Unpaywall.journal_name", type text},
+        {"Unpaywall.DOI", type text}, {"Unpaywall.issn", type text}, {"Unpaywall.journal_name", type text},
         {"Unpaywall.article title", type text}, {"Unpaywall.is_oa", type logical}, {"Unpaywall.oa_status", type text},
         {"Unpaywall.oa_location.license", type text}, {"Unpaywall.oa_location.url", type text},
-        {"Unpaywall.oa_location.url_for_pdf", type text}, {"SCPJ", type text}
+    //    {"Unpaywall.oa_location.url_for_pdf", type text}, {"SCPJ", type text}
+        {"Unpaywall.oa_location.url_for_pdf", type text}
     }),
     // 列DOIを削除
-    削除された列 = Table.RemoveColumns(変更された型1,{"Unpaywall.DOI"})
+    削除された列 = Table.RemoveColumns(変更された型1,{"Unpaywall.DOI"}),
+    置き換えられた値 = Table.ReplaceValue(削除された列,null,"#N/A",Replacer.ReplaceValue,{"Unpaywall.issn"}),
+    // SCPJのデータを取り込み
+    呼び出されたカスタム関数2 = Table.AddColumn(置き換えられた値, "SCPJ data", each getSCPJdata([Unpaywall.issn])),
+    #"展開された SCPJ data" = Table.ExpandTableColumn(呼び出されたカスタム関数2, "SCPJ data", 
+        {"ポリシー", "Title", "出版社版の利用", "公開場所", "公開条件", "備考"},
+        {"ポリシー", "Title", "出版社版の利用", "公開場所", "公開条件", "備考"}
+        ),
+    変更された型2 = Table.TransformColumnTypes(#"展開された SCPJ data",{
+        {"ポリシー", type text}, {"Title", type text}, {"出版社版の利用", type text}, 
+        {"公開場所", type text}, {"公開条件", type text}, {"備考", type any}
+        })
+
 in
-    削除された列
+    変更された型2

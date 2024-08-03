@@ -1,0 +1,23 @@
+(ISSN as text) =>
+// 日本の学協会の著作権ポリシー確認ツール https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php
+// からポリシーのHTMLを取り込む関数
+    let
+        policy_checker_baseurl = "https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php?mode=getPolicyFromIDs&ids=",
+        policy_checker_url     = Text.Combine({policy_checker_baseurl, ISSN}),
+        ソース                 = Web.BrowserContents( policy_checker_url ),
+        // 検索結果のWebページのテーブルを変換する
+        #"HTML から抽出されたテーブル" = Html.Table(ソース, {
+        {"Column1", "TABLE > * > TR > :nth-child(1)"}, {"Column2", "TABLE > * > TR > :nth-child(2)"},
+        {"Column3", "TABLE > * > TR > :nth-child(3)"}, {"Column4", "TABLE > * > TR > :nth-child(4)"},
+        {"Column5", "TABLE > * > TR > :nth-child(5)"}, {"Column6", "TABLE > * > TR > :nth-child(6)"},
+        {"Column7", "TABLE > * > TR > :nth-child(7)"}}, 
+        [RowSelector="TABLE > * > TR"]
+        ),
+        昇格されたヘッダー数 = Table.PromoteHeaders(#"HTML から抽出されたテーブル", [PromoteAllScalars=true]),
+        変更された型   = Table.TransformColumnTypes(昇格されたヘッダー数,{
+        {"入力値", Int64.Type}, {"ポリシー", type text}, {"Title", type text}, 
+        {"出版社版の利用", type text}, {"公開場所", type text}, {"公開条件", type text}, 
+        {"備考", type text}}
+        )
+    in
+        変更された型

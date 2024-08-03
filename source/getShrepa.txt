@@ -1,6 +1,6 @@
 (ISSN as text) =>
     let
-    // sherpa seriveのAPIからJSONを取得
+    // sherpa seriveのAPIからISSNを送信してJSONを取得
         queryparameter = [ #"item-type" = "publication", format = "Json" , identifier = ISSN ],
         SherpaSource = Web.Contents("https://v2.sherpa.ac.uk/cgi" , 
         [   RelativePath="retrieve_by_id/cgi/retrieve_by_id", 
@@ -10,6 +10,7 @@
             ]
         ),
         status = Value.Metadata(SherpaSource)[Response.Status], 
+    // [items]{0}[system_metadata][uri]、ポリシーが4あるURLを取得
         oauri = Json.Document(SherpaSource)[items]{0}[system_metadata][uri]
     in
         if status = 404 then null else 

@@ -1,5 +1,6 @@
 (DOI as text) =>
-    let
+// UnpaywallのAPIにDOIを送信して返ってくるデータを取り込む関数
+let
         unpaywall = Web.Contents("https://api.unpaywall.org/v2", 
             [ RelativePath = DOI , ApiKeyName = "email" , ManualStatusHandling={400, 404, 500} ]),
         // ステータスコードのチェック
