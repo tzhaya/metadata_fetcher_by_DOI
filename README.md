@@ -11,7 +11,9 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
 ## 動作環境
 - Power queryが動作するExcel
 - Sherpa ServicesのAPIキー
-  - Sherpa Sericesを検索するため、APIキーが必要です。お持ちでない場合は https://v2.sherpa.ac.uk/cgi/register からアカウントを作成し、APIキーを入手してください。
+  - Sherpa Sericesは2024年11月から [Open policy finder](https://openpolicyfinder.jisc.ac.uk/) に変わりました。これに伴いAPIも変更が予定されているとのことです。
+  - このサービスでは legacy Sherpa Services API を引き続き使用しています。APIキーの入手は直接問い合わせる必要があるようです。詳しくは https://openpolicyfinder.jisc.ac.uk/help/developers/use-our-api をご覧ください
+  - ~~Sherpa Sericesを検索するため、APIキーが必要です。お持ちでない場合は https://v2.sherpa.ac.uk/cgi/register からアカウントを作成し、APIキーを入手してください。~~
 
 ## 初期設定
 - APIキーの設定が必要です。初回の検索の際に資格情報の入力を求められます。「Web API」を選択して設定します。
@@ -54,11 +56,10 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
   - 非営利団体 OurResearch によって運営されている、論文のオープンアクセスの状況を集約しているサービスです。
   -   REST API : https://unpaywall.org/products/api
   -   Data Format : https://unpaywall.org/data-format
-- Sherpa Services
-  - 世界中の出版社のOA（オープンアクセス）ポリシーを集約・分析し、各ジャーナルのセルフアーカイビングの許諾、著者の権利条項などの概要を閲覧・検索できるオンラインツールSherpa ROMEOを含む検索サービスです。英国のJiscが運営しています。
-  -  Sherpa ROMEO : https://v2.sherpa.ac.uk/romeo/
-  -  Metadata Schema : https://www.sherpa.ac.uk/api/metadata-schema.html
-  -  Object Retrieval By ID API : https://v2.sherpa.ac.uk/api/object-retrieval-by-id.html
+- Open policy finder (Formerly Sherpa services)
+  - 世界中の出版社のOA（オープンアクセス）ポリシーを集約・分析し、各ジャーナルのセルフアーカイビングの許諾、著者の権利条項などの概要を閲覧・検索できるオンラインツールSherpa ROMEOを含む検索サービスです。英国のJiscが運営しています。2024年11月4日に Open policy finder v1.0 としてリニューアルされました。
+  -  Sherpa services https://openpolicyfinder.jisc.ac.uk/
+  -  Sherpa Legacy API Documentation :  https://openpolicyfinder.jisc.ac.uk/sherpa_legacy_api.pdf
 - 日本の学協会の著作権ポリシー確認ツール（島根大学附属図書館） : https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php
   - 学協会著作権ポリシーデータベースの情報をソースとして、日本の学協会著作権ポリシーについてISSNやNCIDから検索できるツールです。
 - 学協会著作権ポリシーデータベース（オープンアクセスリポジトリ推進協会（JPCOAR））： http://id.nii.ac.jp/1458/00000186/
@@ -79,6 +80,7 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
    - クエリをOffice データ接続ファイル形式で出力し /source におきました。テキスト形式でも置いています。
 
 ## To Do
+- Open policy finder APIへの対応 [issue #5](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/5) 
 - ~~まとめて複数のDOIを検索したい~~ [issue #2](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/2) で対応. 複数行で検索できます。
 - ~~エラーチェックを組み込みたい~~[issue #3](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/3) で対応。存在しないDOIはnullとしてテーブルに出力します。
 - ~~もうすこしコードをきれいにしたい~~[issue #2](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/2) で対応。
