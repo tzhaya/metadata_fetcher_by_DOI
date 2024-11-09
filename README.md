@@ -1,6 +1,6 @@
 # metadata_fetcher_by_DOI
 
-DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンスを取得し、このISSNからSherpa Serviceを検索して論文掲載誌のOAポリシーが記載されたURLを取得します。
+DOIからUnpaywallのREST APIを検索してISSNとOAの場合のライセンスを取得し、このISSNからSherpa Legacy APIを検索して論文掲載誌のOAポリシーが記載されたURLを取得します。
 あわせて、「日本の学協会の著作権ポリシー確認ツール」経由で「学協会著作権ポリシーデータベース」（SCPJ）でのデータを取得します。
 
 DOIがわかっている論文が、オープンアクセスかどうかを確認することができます。
