@@ -11,18 +11,18 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
 実行時に「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生する場合は metadata_fetcher_by_DOI_html.xlsx をご利用ください。
 
 ## ファイルの説明
-- **metadata_fetcher_by_DOI.xlsx **
+- **metadata_fetcher_by_DOI.xlsx**
   - 通常版です。
   - Unpaywall、Open policy finder (Formerly Sherpa services)、「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。
   - Sherpa ServicesのAPIキーの入手が必要です。すでにSherpa ServicesのAPIキーをお持ちの方は引き続き利用できます。
 - **metadata_fetcher_by_DOI_html.xlsx** 
-  - Unpaywall、Open policy finder (Formerly Sherpa services)、「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。動作内容は metadata_fetcher_by_DOI.xlsx と同じです。
-  - 実行時に「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生するなど、関数 Html.Table が利用できない環境では、このファイルを使用してください。
+  - 実行時に「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生するなど、関数 Html.Table が利用できない環境では、このファイルを使用してください。動作内容は metadata_fetcher_by_DOI.xlsx と同じです。
+  - Unpaywall、Open policy finder (Formerly Sherpa services)、「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。
   - legacy Sherpa Services API のAPIキーの入手が必要です。すでにSherpa ServicesのAPIキーをお持ちの方は引き続き利用できます。
 - **metadata_fetcher_by_DOI_ss_html.xlsx**
-  - Unpaywallと「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。（ss = Skip Sherpa serivce）
   - Open policy finder (Formerly Sherpa services)を参照しません。legacy Sherpa Services API のAPIキーをお持ちでない場合は、このファイルをご利用ください。
   - 「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」のエラーにも対応しています。
+  - Unpaywallと「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。（ss = Skip Sherpa serivce）
 - フォルダ source
   - カスタム関数とクエリをエクスポートしたエリのファイルと、テキスト形式のファイルがあります。
 
