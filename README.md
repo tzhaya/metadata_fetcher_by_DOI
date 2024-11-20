@@ -8,6 +8,8 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
 
 動作にはMicrosoft ExcelとPower Queryを使用しています。
 
+実行時に「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生する場合は metadata_fetcher_by_DOI_html.xlsx をご利用ください。
+
 ## 動作環境
 - Power queryが動作するExcel
 - Sherpa ServicesのAPIキー
@@ -30,25 +32,28 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
 4. Unpaywallに登録されていないDOI、またはISSNがSherpa ServiceやPolicy Checker (SCPJ)でヒットしない場合は、セルに入力がされません。
 5. 「すべて更新」でシートにあるすべてのDOIに対してもう一度検索が実行されます。実行後は、別のシートやファイルにデータを転記し、シート「DOI」には残さない運用をおすすめします。
 
-|DOI|uri|Unpaywall.issn|Unpaywall.journal_name|Unpaywall.article title|Unpaywall.is_oa|Unpaywall.oa_status|Unpaywall.oa_location.license|Unpaywall.oa_location.url|Unpaywall.oa_location.url_for_pdf|ポリシー|Title|出版社版の利用|公開場所|公開条件|備考|
+|DOI|uri|Unpaywall.issn|Unpaywall.journal_name|Unpaywall.article title|Unpaywall.genre|Unpaywall.published_date|Unpaywall.is_oa|Unpaywall.oa_status|Unpaywall.oa_location.license|Unpaywall.oa_location.url|Unpaywall.oa_location.url_for_pdf|ポリシー|Title|出版社版の利用|公開場所|公開条件|備考|
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|
-|DOI|OAポリシー記載のURL(Sherpa Service)|論文掲載誌のISSN(Unpaywall)|掲載誌名(Unpaywall)|論題(Unpaywall)|DOIの先の論文がOAか否か（OAなら TRUE）(Unpaywall)|OAのステータス（gold, hybrid, bronze, green or closed）(Unpaywall)|DOIの先の論文がOAの場合のライセンス(Unpaywall)|OAの場合のDOI解決先URL(Unpaywall)|OAの場合のPDFのURL(Unpaywall)|ポリシー(Policy Checker (SCPJ))|掲載誌名(Policy Checker (SCPJ))|出版社版利用可否(Policy Checker (SCPJ))|公開場所の指定(Policy Checker (SCPJ))|公開条件(Policy Checker (SCPJ))|備考(Policy Checker (SCPJ))|
-|10.2964/jsik_2016_001|N/A|0917-1436|Joho Chishiki Gakkaishi|Structure analysis and a schema definition method for creating Linked Open Data from complex information resources|TRUE|bronze| |https://www.jstage.jst.go.jp/article/jsik/26/1/26_2016_001/_pdf|https://www.jstage.jst.go.jp/article/jsik/26/1/26_2016_001/_pdf|Green(査読前・査読後どちらでも認める)|情報知識学会誌|利用可能です|著者個人のWebサイト, 機関リポジトリ, 研究資金助成機関のWebサイト, 非営利電子論文アーカイブ|出典表示を行うこと|　|
-|10.1038/7036|https://v2.sherpa.ac.uk/id/publication/1643|1087-0156|Nature Biotechnology|Improving plant drought, salt, and freezing tolerance by gene transfer of a single stress-inducible transcription factor|FALSE|closed||||ヒットなし|||||
+|DOI|OAポリシー記載のURL(Sherpa Service)|論文掲載誌のISSN(Unpaywall)|掲載誌名(Unpaywall)|論題(Unpaywall)|ジャンル(Unpaywall)|発行日(Unpaywall)|DOIの先の論文がOAか否か（OAなら TRUE）(Unpaywall)|OAのステータス（gold, hybrid, bronze, green or closed）(Unpaywall)|DOIの先の論文がOAの場合のライセンス(Unpaywall)|OAの場合のDOI解決先URL(Unpaywall)|OAの場合のPDFのURL(Unpaywall)|ポリシー(Policy Checker (SCPJ))|掲載誌名(Policy Checker (SCPJ))|出版社版利用可否(Policy Checker (SCPJ))|公開場所の指定(Policy Checker (SCPJ))|公開条件(Policy Checker (SCPJ))|備考(Policy Checker (SCPJ))|
+|10.2964/jsik_2016_001|N/A|0917-1436|Joho Chishiki Gakkaishi|Structure analysis and a schema definition method for creating Linked Open Data from complex information resources|journal-article|2016/1/1|TRUE|bronze| |https://www.jstage.jst.go.jp/article/jsik/26/1/26_2016_001/_pdf|https://www.jstage.jst.go.jp/article/jsik/26/1/26_2016_001/_pdf|Green(査読前・査読後どちらでも認める)|情報知識学会誌|利用可能です|著者個人のWebサイト, 機関リポジトリ, 研究資金助成機関のWebサイト, 非営利電子論文アーカイブ|出典表示を行うこと|　|
+|10.1038/7036|https://v2.sherpa.ac.uk/id/publication/1643|1087-0156|Nature Biotechnology|Improving plant drought, salt, and freezing tolerance by gene transfer of a single stress-inducible transcription factor|journal-article|1999/3/FALSE|closed||||ヒットなし|||||
 
 ## 動作の概要
 1. テーブル DOI にあるDOIを取得します
-2. カスタム関数 getUnpwall にDOIを渡します。この関数は、DOIをUnpaywallに送信し、結果のJSONから必要な項目を取り出してテーブルを返します。
+2. カスタム関数 getUnpaywall にDOIを渡します。この関数は、DOIをUnpaywallに送信し、結果のJSONから必要な項目を取り出してテーブルを返します。
 3. 結果のテーブルを作成します。
 4. カスタム関数 getSharpa に、結果のテーブルに含まれるISSN-Lを渡します。この関数は、ISSNをSherpa Serviceに送信し、取得したJSONから詳細情報が記載されたURL（のみ）を返します。
 5. カスタム関数 getSharpa から返ってきたURLを、結果のテーブルに追加します。
-6. カスタム関数 getSCPJdata に、結果のテーブルに含まれるISSN-Lを渡します。この関数は、ISSNをPolicy Checker (SCPJ)に送信し、結果のWebページのうちテーブル（のみ）を返します。
-7. カスタム関数 getSCPJdata から返ってきたテーブルを、結果のテーブルに追加します。
+6. カスタム関数 getSCPJdata/getSCPJhtml に、結果のテーブルに含まれるISSN-Lを渡します。この関数は、ISSNをPolicy Checker (SCPJ)に送信し、結果のWebページのうちテーブル（のみ）を返します。
+   1. カスタム関数 getSCPJdataは、入力した html に対して指定された CSS セレクターの実行結果を含むテーブルを返す関数 Html.Table を使用してデータを取得します。metadata_fetcher_by_DOI.xlsx で使用しています。
+   2. カスタム関数 getSCPJhtmlは、バイナリとして url からダウンロードされたコンテンツを返す関数 Web.Contents を使用してデータを取得します。metadata_fetcher_by_DOI_html.xlsx で使用しています。
+7. カスタム関数 getSCPJdata/getSCPJhtml から返ってきたテーブルを、結果のテーブルに追加します。
 8. これで完成です。
 
 ## その他
-- その他の項目の取得が必要な場合は、クエリを適宜書き換えてご利用ください。
-- 項目の追加・変更は、取得用の関数と、項目を展開するクエリ DOI 両方の書き換えが必要です。
+- 主に使用するクエリ DOI と、カスタム関数 getUnpaywall、getSharpa、getSCPJdata、getSCPJhtml をエクスポートして source フォルダに置きました。
+- その他の項目の取得が必要な場合は、クエリ DOI とカスタム関数を適宜書き換えてご利用ください。
+- 項目の追加・変更は、取得用のカスタム関数関数と、項目を展開するクエリ DOI 両方の書き換えが必要です。
 - 存在しないDOI、Unpaywall未登録のDOI、ISSNがSherpa ServiceやPolicy Checker (SCPJ)でヒットしない場合は入力がない（null値または"N/A"など）と表示されます。
 
 ## リンク
@@ -66,6 +71,10 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
   - 日本国内の学協会等のOA方針を調べられるデータベースです。
 
 ## 更新
+ - 2024/11/20
+   - Unpaywallから取得するデータに、genre と published_date を追加しました。
+   - 「日本の学協会の著作権ポリシー確認ツール」からのデータ取得に、関数 Web.Contents を使用するバージョン metadata_fetcher_by_DOI_html.xlsx を作成しました。「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生する場合は、metadata_fetcher_by_DOI_html.xlsx をご利用ください。
+
  - 2024/08/03
    - 日本の学協会の著作権ポリシー確認ツールの結果を、URLではなくテーブルに直接展開するようにしました。これを実行する関数 getSCPJdata を追加しています。
 
