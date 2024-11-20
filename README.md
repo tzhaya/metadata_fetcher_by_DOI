@@ -10,11 +10,28 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
 
 実行時に「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生する場合は metadata_fetcher_by_DOI_html.xlsx をご利用ください。
 
+## ファイルの説明
+- **metadata_fetcher_by_DOI.xlsx **
+  - 通常版です。
+  - Unpaywall、Open policy finder (Formerly Sherpa services)、「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。
+  - Sherpa ServicesのAPIキーの入手が必要です。すでにSherpa ServicesのAPIキーをお持ちの方は引き続き利用できます。
+- **metadata_fetcher_by_DOI_html.xlsx** 
+  - Unpaywall、Open policy finder (Formerly Sherpa services)、「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。動作内容は metadata_fetcher_by_DOI.xlsx と同じです。
+  - 実行時に「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生するなど、関数 Html.Table が利用できない環境では、このファイルを使用してください。
+  - legacy Sherpa Services API のAPIキーの入手が必要です。すでにSherpa ServicesのAPIキーをお持ちの方は引き続き利用できます。
+- **metadata_fetcher_by_DOI_ss_html.xlsx**
+  - Unpaywallと「日本の学協会の著作権ポリシー確認ツール」経由でSCPJの情報を取得します。（ss = Skip Sherpa serivce）
+  - Open policy finder (Formerly Sherpa services)を参照しません。legacy Sherpa Services API のAPIキーをお持ちでない場合は、このファイルをご利用ください。
+  - 「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」のエラーにも対応しています。
+- フォルダ source
+  - カスタム関数とクエリをエクスポートしたエリのファイルと、テキスト形式のファイルがあります。
+
 ## 動作環境
 - Power queryが動作するExcel
 - Sherpa ServicesのAPIキー
   - Sherpa Sericesは2024年11月から [Open policy finder](https://openpolicyfinder.jisc.ac.uk/) に変わりました。これに伴いAPIも変更が予定されているとのことです。
-  - このサービスでは legacy Sherpa Services API を引き続き使用しています。APIキーの入手は直接問い合わせる必要があるようです。詳しくは https://openpolicyfinder.jisc.ac.uk/help/developers/use-our-api をご覧ください
+  - このサービスでは legacy Sherpa Services API を引き続き使用しています。APIキーの入手は直接問い合わせる必要があるようです。詳しくは https://openpolicyfinder.jisc.ac.uk/help/developers/use-our-api をご覧ください。
+  - お持ちでない場合は、Sherpa Servicesを使用しない metadata_fetcher_by_DOI_ss_html.xlsx をご利用ください。
   - ~~Sherpa Sericesを検索するため、APIキーが必要です。お持ちでない場合は https://v2.sherpa.ac.uk/cgi/register からアカウントを作成し、APIキーを入手してください。~~
 
 ## 初期設定
@@ -63,7 +80,7 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
   -   Data Format : https://unpaywall.org/data-format
 - Open policy finder (Formerly Sherpa services)
   - 世界中の出版社のOA（オープンアクセス）ポリシーを集約・分析し、各ジャーナルのセルフアーカイビングの許諾、著者の権利条項などの概要を閲覧・検索できるオンラインツールSherpa ROMEOを含む検索サービスです。英国のJiscが運営しています。2024年11月4日に Open policy finder v1.0 としてリニューアルされました。
-  -  Sherpa services https://openpolicyfinder.jisc.ac.uk/
+  -  Open policy finder  https://openpolicyfinder.jisc.ac.uk/
   -  Sherpa Legacy API Documentation :  https://openpolicyfinder.jisc.ac.uk/sherpa_legacy_api.pdf
 - 日本の学協会の著作権ポリシー確認ツール（島根大学附属図書館） : https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php
   - 学協会著作権ポリシーデータベースの情報をソースとして、日本の学協会著作権ポリシーについてISSNやNCIDから検索できるツールです。
@@ -74,6 +91,7 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
  - 2024/11/20
    - Unpaywallから取得するデータに、genre と published_date を追加しました。
    - 「日本の学協会の著作権ポリシー確認ツール」からのデータ取得に、関数 Web.Contents を使用するバージョン metadata_fetcher_by_DOI_html.xlsx を作成しました。「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生する場合は、metadata_fetcher_by_DOI_html.xlsx をご利用ください。
+   - Open policy finderのリリースとAPIの変更に伴い、Open policy finder (Formerly Sherpa services)を使用しないバージョン metadata_fetcher_by_DOI_ss_html.xlsx を作成しました。
 
  - 2024/08/03
    - 日本の学協会の著作権ポリシー確認ツールの結果を、URLではなくテーブルに直接展開するようにしました。これを実行する関数 getSCPJdata を追加しています。
