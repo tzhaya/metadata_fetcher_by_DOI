@@ -9,35 +9,33 @@ let
     // データをテーブルに展開
     #"展開された getUnpaywall" = Table.ExpandTableColumn(置換されたエラー, "getUnpaywall", 
         {
-            "DOI", "issn", "journal_name", "article title", "is_oa", "oa_status", "oa_location.license","oa_location.url",  "oa_location.url_for_pdf"
+            "DOI", "issn", "journal_name", "article title","genre", "published_date", "is_oa", "oa_status", "oa_location.license","oa_location.url",  "oa_location.url_for_pdf"
         }, 
         {
-            "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", "Unpaywall.is_oa", "Unpaywall.oa_status", 
+         "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", 
+         "Unpaywall.genre", "Unpaywall.published_date","Unpaywall.is_oa", "Unpaywall.oa_status", 
          "Unpaywall.oa_location.license","Unpaywall.oa_location.url",  "Unpaywall.oa_location.url_for_pdf"
          }),
-    // // カスタム関数 getSCPJurlにISSNを渡してURLを取得、列SCPJとして追加する
-    // 呼び出されたカスタム関数1 = Table.AddColumn(#"展開された getUnpaywall", "SCPJ", each getSCPJurl([Unpaywall.issn])),
-    //// エラーは N/A に置換
-    //置換されたエラー1 = Table.ReplaceErrorValues(呼び出されたカスタム関数1, {{"SCPJ", "N/A"}}),
+    変更された型3 = Table.TransformColumnTypes(#"展開された getUnpaywall",{{"Unpaywall.published_date", type date}}),
     //カスタム関数 getSherpaにISSNを渡してデータ（URL)を取得、列uriとして追加する
-    呼び出されたカスタム関数1 = Table.AddColumn(#"展開された getUnpaywall", "uri", each getSherpa([Unpaywall.issn])),
+    呼び出されたカスタム関数1 = Table.AddColumn(変更された型3, "uri", each getSherpa([Unpaywall.issn])),
     // エラーは N/A に置換
     置換されたエラー2 = Table.ReplaceErrorValues(呼び出されたカスタム関数1, {{"uri", "N/A"}}),
     //列を並び替えて uri を2列目に
     並べ替えられた列 = Table.ReorderColumns(置換されたエラー2,
         {
          "DOI", "uri", "Unpaywall.DOI", "Unpaywall.issn", "Unpaywall.journal_name", "Unpaywall.article title", 
+         "Unpaywall.genre", "Unpaywall.published_date",
          "Unpaywall.is_oa", "Unpaywall.oa_status", "Unpaywall.oa_location.license", "Unpaywall.oa_location.url", 
-         //"Unpaywall.oa_location.url_for_pdf","SCPJ"
          "Unpaywall.oa_location.url_for_pdf"
          }),
     // 型を変換
     変更された型1 = Table.TransformColumnTypes(並べ替えられた列,
     {
         {"uri", type text}, {"Unpaywall.DOI", type text}, {"Unpaywall.issn", type text}, {"Unpaywall.journal_name", type text},
-        {"Unpaywall.article title", type text}, {"Unpaywall.is_oa", type logical}, {"Unpaywall.oa_status", type text},
+        {"Unpaywall.article title", type text}, {"Unpaywall.genre", type text}, {"Unpaywall.published_date", type date},
+        {"Unpaywall.is_oa", type logical}, {"Unpaywall.oa_status", type text},
         {"Unpaywall.oa_location.license", type text}, {"Unpaywall.oa_location.url", type text},
-    //    {"Unpaywall.oa_location.url_for_pdf", type text}, {"SCPJ", type text}
         {"Unpaywall.oa_location.url_for_pdf", type text}
     }),
     // 列DOIを削除

@@ -1,0 +1,24 @@
+(ISSN as text) => let
+    // 日本の学協会の著作権ポリシー確認ツール https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php
+    // からポリシーのHTMLを取り込む関数
+        policy_checker_baseurl = "https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php?mode=getPolicyFromIDs&ids=",
+        policy_checker_url     = Text.Combine({policy_checker_baseurl, ISSN}),
+        ソース                  = Text.FromBinary(Web.Contents(policy_checker_url)),
+        インポートされたテキスト = Lines.FromText(ソース),
+        テーブルに変換済み = Table.FromList(インポートされたテキスト, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+        置き換えられた値 = Table.ReplaceValue(テーブルに変換済み,"#(tab)","",Replacer.ReplaceText,{"Column1"}),
+        フィルターされた行 = Table.SelectRows(置き換えられた値, each Text.StartsWith([Column1], "<tr><td")),
+        置き換えられた値1 = Table.ReplaceValue(フィルターされた行,"<tr>","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値2 = Table.ReplaceValue(置き換えられた値1,"</tr></tbody></table><p><a href=""/policy_checker/scpj.php"">戻る（再検索）</a></p></body></html>","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値3 = Table.ReplaceValue(置き換えられた値2,"<td class=""green"">","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値4 = Table.ReplaceValue(置き換えられた値3,"<td class=""blue"">","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値5 = Table.ReplaceValue(置き換えられた値4,"<td class=""yellow"">","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値6 = Table.ReplaceValue(置き換えられた値5,"<td class=""gray"">","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値7 = Table.ReplaceValue(置き換えられた値6,"<td class=""white"">","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値8 = Table.ReplaceValue(置き換えられた値7,"<td class=""no-policy-color"">","",Replacer.ReplaceText,{"Column1"}),
+        置き換えられた値9 = Table.ReplaceValue(置き換えられた値8,"<td>","",Replacer.ReplaceText,{"Column1"}),
+        区切り記号による列の分割 = Table.SplitColumn(置き換えられた値9, "Column1", Splitter.SplitTextByDelimiter("</td>", QuoteStyle.Csv), {"Column1.1", "Column1.2", "Column1.3", "Column1.4", "Column1.5", "Column1.6", "Column1.7", "Column1.8"}),
+        変更された型 = Table.TransformColumnTypes(区切り記号による列の分割,{{"Column1.1", type text}}),
+        削除された列 = Table.RemoveColumns(#"名前が変更された列 ",{"Column1.8"})
+    in
+        削除された列
