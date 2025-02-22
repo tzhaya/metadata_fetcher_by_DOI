@@ -1,0 +1,41 @@
+= (DOI as text) =>
+// UnpaywallのAPIにDOIを送信して返ってくるデータを取り込む関数
+let
+    // Unpaywall APIからデータを取得
+    unpaywall = Web.Contents("https://api.unpaywall.org/v2", 
+        [ RelativePath = DOI, ApiKeyName = "email", ManualStatusHandling = {400, 404, 500} ]),
+    // ステータスコードのチェック
+    status = Value.Metadata(unpaywall)[Response.Status],
+    // レスポンスをJSON形式に変換
+    jsonResponse = Json.Document(unpaywall),
+    unpaywallSource = Table.FromColumns({Lines.FromBinary(unpaywall, null, null)}),
+    // Transform each line using Json.Document
+    #"Transformed Column" = Table.TransformColumns(unpaywallSource, {"Column1", Json.Document}),
+    #"展開された Column1" = Table.ExpandRecordColumn(
+    #"Transformed Column", "Column1", 
+    {"doi", "doi_url", "title", "genre", "is_paratext", "published_date", "year", "journal_name", "journal_issns", "journal_issn_l", "journal_is_oa", "journal_is_doaj", "is_oa", "oa_status", "has_repository_copy", "best_oa_location", "first_oa_location", "updated", "data_standard", "z_authors"},
+    {"DOI", "DOI URL", "Title", "Genre", "Is Paratext", "Published Date", "Year", "Journal Name", "Journal ISSNs", "Journal ISSN L", "Journal Is OA", "Journal Is DOAJ", "Is OA", "OA Status", "Has Repository Copy", "Best OA Location", "First OA Location", "Updated", "Data Standard", "Z Authors"}
+    ),
+    // Column1.best_oa_locationからのoa_location.license,oa_uri,url_for_pdfを取り出してテーブルに追加
+    #"oalocations" = Table.ExpandRecordColumn(
+        #"展開された Column1", "Best OA Location", 
+        {"license",            "url",              "url_for_pdf"}, 
+        {"Best OA Location-License","Best OA Location-URL",  "Best OA Location-URL for PDF"}
+    ),
+    #"first_oa_locations" = Table.ExpandRecordColumn(
+        #"oalocations", "First OA Location", 
+        {"license",            "url",              "url_for_pdf"}, 
+        {"First OA Location-License","First OA Location-URL",  "First OA Location-URL for PDF"}
+    ),
+    #"展開された Z Authors" = Table.ExpandListColumn(#"first_oa_locations", "Z Authors"),
+    #"展開された Z Authors1" = Table.ExpandRecordColumn(#"展開された Z Authors", "Z Authors", {"given", "family", "sequence", "affiliation"}, {"First Author-given", "First Author-family", "First Author-sequence", "First Author-affiliation"}),
+    フィルターされた行 = Table.SelectRows(#"展開された Z Authors1", each ([#"First Author-sequence"] = "first")),
+    // Affiliationをさらに展開（複数の所属がある場合を考慮）
+    #"Expanded Affiliation" = Table.TransformColumns(
+        フィルターされた行, 
+        {"First Author-affiliation", each if _ is null then null else Text.Combine(List.Transform(_, each _[name]), "|"), type text}
+    )
+in
+    // 404エラーならnullを返す
+    if status = 404 then null else
+    #"Expanded Affiliation"

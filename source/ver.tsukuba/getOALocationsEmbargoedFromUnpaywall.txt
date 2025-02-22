@@ -1,0 +1,24 @@
+= (DOI as text) =>
+// UnpaywallのAPIにDOIを送信して返ってくるデータからoa_locations_embargoedを展開して新規テーブルを作成する関数
+let
+    // Unpaywall APIからデータを取得
+    unpaywall = Web.Contents("https://api.unpaywall.org/v2", 
+        [ RelativePath = DOI, ApiKeyName = "email", ManualStatusHandling = {400, 404, 500} ]),
+    // ステータスコードのチェック
+    status = Value.Metadata(unpaywall)[Response.Status],
+    // レスポンスをJSON形式に変換
+    jsonResponse = Json.Document(unpaywall),
+    // oa_locationsフィールドを展開するためにリストを作成
+    oaLocationsList = if Record.HasFields(jsonResponse, "oa_locations_embargoed") 
+        then Table.FromList(jsonResponse[oa_locations_embargoed], Splitter.SplitByNothing(), {"OALocationRecord"}) 
+        else null,
+    // oaLocationsList内のレコードを展開して必要な列を抽出
+    #"Expanded OALocationRecord" = Table.ExpandRecordColumn(
+        oaLocationsList, 
+        "OALocationRecord", 
+        {"evidence", "host_type", "is_best", "license", "oa_date", "updated", "url", "url_for_landing_page", "url_for_pdf",  "version"}, 
+        {"Evidence", "hostType", "isBest", "License", "OADate", "Updated", "URL", "URLForLandingPage", "URLForPDF","Version"}
+    ),
+    追加されたインデックス = Table.AddIndexColumn(#"Expanded OALocationRecord", "order", 1, 1, Int64.Type)
+in
+    追加されたインデックス

@@ -1,0 +1,14 @@
+let
+    // テーブルDOIからDOIを取得
+    ソース = Excel.CurrentWorkbook(){[Name="入力DOI"]}[Content],
+    変更された型 = Table.TransformColumnTypes(ソース,{{"DOI", type text}}),
+
+    // カスタム関数 UnpaywallAuthorsQuery にDOIを渡してデータを取得
+    呼び出されたカスタム関数 = Table.AddColumn(変更された型, "OALocations", each getOALocationsEmbargoedFromUnpaywall([DOI])),
+    // エラー行(データのない行)を削除
+    エラーを削除 = Table.RemoveRowsWithErrors(呼び出されたカスタム関数, {"OALocations"}),
+    #"展開された OALocations" = Table.ExpandTableColumn(エラーを削除, "OALocations", {"Evidence", "hostType", "isBest", "License", "OADate", "Updated", "URL", "URLForLandingPage", "URLForPDF", "Version", "order"}, {"Evidence", "hostType", "isBest", "License", "OADate", "Updated", "URL", "URLForLandingPage", "URLForPDF", "Version", "order"}),
+    並べ替えられた列 = Table.ReorderColumns(#"展開された OALocations",{"DOI", "order", "Evidence", "hostType", "isBest", "License", "OADate", "Updated", "URL", "URLForLandingPage", "URLForPDF", "Version"}),
+    フィルターされた行 = Table.SelectRows(並べ替えられた列, each [order] <> null and [order] <> "")
+in
+    フィルターされた行

@@ -1,0 +1,31 @@
+= (DOI as text) =>
+// UnpaywallのAPIにDOIを送信して返ってくるデータからz_authorsを展開して新規テーブルを作成する関数
+
+let
+    // Unpaywall APIからデータを取得
+    unpaywall = Web.Contents("https://api.unpaywall.org/v2", 
+        [ RelativePath = DOI, ApiKeyName = "email", ManualStatusHandling = {400, 404, 500} ]),
+    // ステータスコードのチェック
+    status = Value.Metadata(unpaywall)[Response.Status],
+    // レスポンスをJSON形式に変換
+    jsonResponse = Json.Document(unpaywall),
+    // z_authorsフィールドを展開するためにリストを作成
+    authorsList = if Record.HasFields(jsonResponse, "z_authors") 
+        then Table.FromList(jsonResponse[z_authors], Splitter.SplitByNothing(), {"AuthorRecord"}) 
+        else null,
+    // AuthorsList内のレコードを展開して必要な列を抽出
+    #"Expanded AuthorRecord" = Table.ExpandRecordColumn(
+        authorsList, 
+        "AuthorRecord", 
+        {"given", "family", "sequence", "affiliation"}, 
+        {"GivenName", "FamilyName", "Sequence", "Affiliation"}
+    ),
+    // Affiliationをさらに展開（複数の所属がある場合を考慮）
+    #"Expanded Affiliation" = Table.TransformColumns(
+        #"Expanded AuthorRecord", 
+        {"Affiliation", each if _ is null then null else Text.Combine(List.Transform(_, each _[name]), "|"), type text}
+    ),
+    追加されたインデックス = Table.AddIndexColumn(#"Expanded Affiliation", "order", 1, 1, Int64.Type),
+    並べ替えられた列 = Table.ReorderColumns(追加されたインデックス,{"order", "GivenName", "FamilyName", "Sequence", "Affiliation"})
+in
+    並べ替えられた列

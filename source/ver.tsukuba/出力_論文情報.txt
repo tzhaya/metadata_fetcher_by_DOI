@@ -1,0 +1,13 @@
+let
+    // テーブルDOIからDOIを取得
+    ソース = Excel.CurrentWorkbook(){[Name="入力DOI"]}[Content],
+    変更された型 = Table.TransformColumnTypes(ソース,{{"DOI", type text}}),
+    // カスタム関数 getUnpaywallにDOIを渡してデータを取得
+    呼び出されたカスタム関数 = Table.AddColumn(変更された型, "getUnpaywall", each getUnpaywall([DOI])),
+    // エラーはnullに置換
+    置換されたエラー = Table.ReplaceErrorValues(呼び出されたカスタム関数, {{"getUnpaywall", null}}),
+    #"展開された getUnpaywall" = Table.ExpandTableColumn(置換されたエラー, "getUnpaywall", {"DOI", "DOI URL", "Title", "Genre", "Is Paratext", "Published Date", "Year", "Journal Name", "Journal ISSNs", "Journal ISSN L", "Journal Is OA", "Journal Is DOAJ", "Is OA", "OA Status", "Has Repository Copy", "Best OA Location-License", "Best OA Location-URL", "Best OA Location-URL for PDF", "First OA Location-License", "First OA Location-URL", "First OA Location-URL for PDF", "Updated", "Data Standard", "First Author-given", "First Author-family", "First Author-sequence", "First Author-affiliation"}, {"DOI.1", "DOI URL", "Title", "Genre", "Is Paratext", "Published Date", "Year", "Journal Name", "Journal ISSNs", "Journal ISSN L", "Journal Is OA", "Journal Is DOAJ", "Is OA", "OA Status", "Has Repository Copy", "Best OA Location-License", "Best OA Location-URL", "Best OA Location-URL for PDF", "First OA Location-License", "First OA Location-URL", "First OA Location-URL for PDF", "Updated", "Data Standard", "First Author-given", "First Author-family", "First Author-sequence", "First Author-affiliation"}),
+    変更された型1 = Table.TransformColumnTypes(#"展開された getUnpaywall",{{"Published Date", type date}}),
+    削除された列 = Table.RemoveColumns(変更された型1,{"DOI.1"})
+in
+    削除された列

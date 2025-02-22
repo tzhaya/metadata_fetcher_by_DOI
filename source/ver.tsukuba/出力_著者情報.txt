@@ -1,0 +1,22 @@
+let
+    // テーブルDOIからDOIを取得
+    ソース = Excel.CurrentWorkbook(){[Name="入力DOI"]}[Content],
+    変更された型 = Table.TransformColumnTypes(ソース,{{"DOI", type text}}),
+
+    // カスタム関数 UnpaywallAuthorsQuery にDOIを渡してデータを取得
+    呼び出されたカスタム関数 = Table.AddColumn(変更された型, "AuthorDetails", each getAuthorsFromUnpaywall([DOI])),
+    // エラー行(データのない行)を削除
+    エラーを削除 = Table.RemoveRowsWithErrors(呼び出されたカスタム関数, {"AuthorDetails"}),
+    // DOIごとにテーブルを作成
+    分割されたテーブル = Table.AddColumn(エラーを削除, "IndividualSheets", each 
+        let
+            doiTable = [AuthorDetails]
+        in
+            if doiTable = null then null else doiTable
+    ),
+    // ResultTable列を展開
+    展開された列 = Table.ExpandTableColumn(分割されたテーブル, "IndividualSheets", {"order", "GivenName", "FamilyName", "Sequence", "Affiliation"}),
+
+    削除された列 = Table.RemoveColumns(展開された列,{"AuthorDetails"})
+in
+    削除された列
