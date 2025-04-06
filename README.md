@@ -88,6 +88,10 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
   - 日本国内の学協会等のOA方針を調べられるデータベースです。
 
 ## 更新
+ - 2025/04/06
+   - [SCPJは2025/03/24にリニューアル](https://jpcoar.repo.nii.ac.jp/news/2024#news_20250324)されましたが、このアプリケーションでは引き続き「日本の学協会の著作権ポリシー確認ツール」を参照しています。データは更新前のものです。ご注意ください
+   - データ項目が大幅に刷新されています。データ整備の状況を見ながら、このアプリケーションもアップデートを予定しています。リニューアル後のSCPJに対応する [issue #6](https://github.com/tzhaya/metadata_fetcher_by_DOI/issues/6) 
+
  - 2024/11/20
    - Unpaywallから取得するデータに、genre と published_date を追加しました。
    - 「日本の学協会の著作権ポリシー確認ツール」からのデータ取得に、関数 Web.Contents を使用するバージョン metadata_fetcher_by_DOI_html.xlsx を作成しました。「Expression.Error: インポート Html.Table がエクスポートと一致しません。モジュールの参照が漏れていませんか?」が発生する場合は、metadata_fetcher_by_DOI_html.xlsx をご利用ください。
