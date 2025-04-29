@@ -1,6 +1,5 @@
 = (DOI as text) =>
-// UnpaywallのAPIにDOIを送信して返ってくるデータからz_authorsを展開して新規テーブルを作成する関数
-
+// UnpaywallのAPIにDOIを送信して返ってくるデータを取り込む関数
 let
     // Unpaywall APIからデータを取得
     unpaywall = Web.Contents("https://api.unpaywall.org/v2", 

@@ -1,4 +1,4 @@
-let
+= Table.ReplaceValue(変更された型2,let
     // テーブルDOIからDOIを取得
     ソース = Excel.CurrentWorkbook(){[Name="入力DOI"]}[Content],
     変更された型 = Table.TransformColumnTypes(ソース,{{"DOI", type text}}),
@@ -8,6 +8,12 @@ let
     置換されたエラー = Table.ReplaceErrorValues(呼び出されたカスタム関数, {{"getUnpaywall", null}}),
     #"展開された getUnpaywall" = Table.ExpandTableColumn(置換されたエラー, "getUnpaywall", {"DOI", "DOI URL", "Title", "Genre", "Is Paratext", "Published Date", "Year", "Journal Name", "Journal ISSNs", "Journal ISSN L", "Journal Is OA", "Journal Is DOAJ", "Is OA", "OA Status", "Has Repository Copy", "Best OA Location-License", "Best OA Location-URL", "Best OA Location-URL for PDF", "First OA Location-License", "First OA Location-URL", "First OA Location-URL for PDF", "Updated", "Data Standard", "First Author-given", "First Author-family", "First Author-sequence", "First Author-affiliation"}, {"DOI.1", "DOI URL", "Title", "Genre", "Is Paratext", "Published Date", "Year", "Journal Name", "Journal ISSNs", "Journal ISSN L", "Journal Is OA", "Journal Is DOAJ", "Is OA", "OA Status", "Has Repository Copy", "Best OA Location-License", "Best OA Location-URL", "Best OA Location-URL for PDF", "First OA Location-License", "First OA Location-URL", "First OA Location-URL for PDF", "Updated", "Data Standard", "First Author-given", "First Author-family", "First Author-sequence", "First Author-affiliation"}),
     変更された型1 = Table.TransformColumnTypes(#"展開された getUnpaywall",{{"Published Date", type date}}),
-    削除された列 = Table.RemoveColumns(変更された型1,{"DOI.1"})
+    削除された列 = Table.RemoveColumns(変更された型1,{"DOI.1"}),
+    削除された重複 = Table.Distinct(削除された列),
+    削除された重複1 = Table.Distinct(削除された重複, {"DOI"}),
+    削除された空白行 = Table.SelectRows(削除された重複1, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+    区切り記号による列の分割 = Table.SplitColumn(削除された空白行, "Journal ISSNs", Splitter.SplitTextByDelimiter(",", QuoteStyle.None), {"Journal ISSNs.1", "Journal ISSNs.2"}),
+    変更された型2 = Table.TransformColumnTypes(区切り記号による列の分割,{{"Journal ISSNs.1", type text}, {"Journal ISSNs.2", type text}}),
+    置き換えられた値 = Table.ReplaceValue(変更された型2,"-","",Replacer.ReplaceText,{"Journal ISSNs.1", "Journal ISSNs.2", "Journal ISSN L"})
 in
-    削除された列
+    置き換えられた値"-","",Replacer.ReplaceText,{"Journal ISSNs.1", "Journal ISSNs.2", "Journal ISSN L"})

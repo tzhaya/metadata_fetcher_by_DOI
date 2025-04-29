@@ -1,0 +1,24 @@
+let
+    ソース = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1Qk8Wnl8JK9SGS7qpgyH1Z7O50jXMiTJ6SBSr03IV-7Q/export?format=csv&gid=0"),[Delimiter=",", Columns=24, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+    削除された最初の行 = Table.Skip(ソース,1),
+    昇格されたヘッダー数 = Table.PromoteHeaders(削除された最初の行, [PromoteAllScalars=true]),
+    削除された列 = Table.RemoveColumns(昇格されたヘッダー数,{"2025/03/26"}),
+    マージされたクエリ数 = Table.NestedJoin(削除された列, {"ISSN-L"}, 出力_論文情報, {"Journal ISSNs.1"}, "出力_論文情報", JoinKind.LeftOuter),
+    マージされたクエリ数1 = Table.NestedJoin(マージされたクエリ数, {"ISSN-L"}, 出力_論文情報, {"Journal ISSNs.2"}, "出力_論文情報.1", JoinKind.LeftOuter),
+    マージされたクエリ数2 = Table.NestedJoin(マージされたクエリ数1, {"PISSN"}, 出力_論文情報, {"Journal ISSNs.1"}, "出力_論文情報.2", JoinKind.LeftOuter),
+    マージされたクエリ数3 = Table.NestedJoin(マージされたクエリ数2, {"PISSN"}, 出力_論文情報, {"Journal ISSNs.2"}, "出力_論文情報.3", JoinKind.LeftOuter),
+    マージされたクエリ数4 = Table.NestedJoin(マージされたクエリ数3, {"EISSN"}, 出力_論文情報, {"Journal ISSNs.1"}, "出力_論文情報.4", JoinKind.LeftOuter),
+    マージされたクエリ数5 = Table.NestedJoin(マージされたクエリ数4, {"EISSN"}, 出力_論文情報, {"Journal ISSNs.2"}, "出力_論文情報.5", JoinKind.LeftOuter),
+    #"展開された 出力_論文情報" = Table.ExpandTableColumn(マージされたクエリ数5, "出力_論文情報", {"DOI"}, {"DOI"}),
+    #"展開された 出力_論文情報.1" = Table.ExpandTableColumn(#"展開された 出力_論文情報", "出力_論文情報.1", {"DOI"}, {"DOI.1"}),
+    #"展開された 出力_論文情報.2" = Table.ExpandTableColumn(#"展開された 出力_論文情報.1", "出力_論文情報.2", {"DOI"}, {"DOI.2"}),
+    #"展開された 出力_論文情報.3" = Table.ExpandTableColumn(#"展開された 出力_論文情報.2", "出力_論文情報.3", {"DOI"}, {"DOI.3"}),
+    #"展開された 出力_論文情報.4" = Table.ExpandTableColumn(#"展開された 出力_論文情報.3", "出力_論文情報.4", {"DOI"}, {"DOI.4"}),
+    #"展開された 出力_論文情報.5" = Table.ExpandTableColumn(#"展開された 出力_論文情報.4", "出力_論文情報.5", {"DOI"}, {"DOI.5"}),
+    結合された列 = Table.CombineColumns(#"展開された 出力_論文情報.5",{"DOI", "DOI.1", "DOI.2", "DOI.3", "DOI.4", "DOI.5"},Combiner.CombineTextByDelimiter("", QuoteStyle.None),"DOI統合"),
+    フィルターされた行 = Table.SelectRows(結合された列, each [DOI統合] <> null and [DOI統合] <> ""),
+    並べ替えられた列 = Table.ReorderColumns(フィルターされた行,{"DOI統合", "ジャーナルID", "ジャーナル名", "ジャーナル別名", "ジャーナル英語名", "ジャーナルURL", "ISSN-L", "PISSN", "EISSN", "DOAJ", "OAタイプ", "OAタイプ備考", "ポリシーURL", "即時OA対応", "学会ID", "学会・団体名", "学会・団体英語名", "学会URL", "学会お問合せ先URL", "学会名鑑URL", "著作権者（出版社版）", "ライセンス情報（出版社版）", "掲載可否（出版社版）", "掲載場所（出版社版）_機関リポジトリ"}),
+    #"名前が変更された列 " = Table.RenameColumns(並べ替えられた列,{{"DOI統合", "DOI"}}),
+    削除された重複 = Table.Distinct(#"名前が変更された列 ", {"DOI"})
+in
+    削除された重複

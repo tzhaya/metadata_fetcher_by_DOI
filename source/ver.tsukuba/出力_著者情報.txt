@@ -17,6 +17,8 @@ let
     // ResultTable列を展開
     展開された列 = Table.ExpandTableColumn(分割されたテーブル, "IndividualSheets", {"order", "GivenName", "FamilyName", "Sequence", "Affiliation"}),
 
-    削除された列 = Table.RemoveColumns(展開された列,{"AuthorDetails"})
+    削除された列 = Table.RemoveColumns(展開された列,{"AuthorDetails"}),
+    空白行の削除 = Table.SelectRows(削除された列, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+    フィルターされた行 = Table.SelectRows(空白行の削除, each [GivenName] <> null and [GivenName] <> "")
 in
-    削除された列
+    フィルターされた行
