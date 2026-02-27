@@ -1,0 +1,312 @@
+{
+    "items": [
+        {
+            "listed_in_doaj_phrases": [
+                {
+                    "value": "no",
+                    "language": "en",
+                    "phrase": "No"
+                }
+            ],
+            "publisher_policy": [
+                {
+                    "uri": "https://v2.sherpa.ac.uk/id/publisher_policy/2775",
+                    "open_access_prohibited": "no",
+                    "urls": [
+                        {
+                            "description": "Copyright",
+                            "url": "https://www.elsevier.com/about/policies/copyright"
+                        }
+                    ],
+                    "publication_count": 6,
+                    "open_access_prohibited_phrases": [
+                        {
+                            "phrase": "No",
+                            "language": "en",
+                            "value": "no"
+                        }
+                    ],
+                    "internal_moniker": "CC BY (OAJ) with sub/acc routes",
+                    "permitted_oa": [
+                        {
+                            "conditions": [
+                                "Published source must be acknowledged with citation",
+                                "Must link to published article with DOI"
+                            ],
+                            "additional_oa_fee_phrases": [
+                                {
+                                    "phrase": "No",
+                                    "value": "no",
+                                    "language": "en"
+                                }
+                            ],
+                            "article_version_phrases": [
+                                {
+                                    "value": "published",
+                                    "language": "en",
+                                    "phrase": "Published"
+                                }
+                            ],
+                            "article_version": [
+                                "published"
+                            ],
+                            "additional_oa_fee": "no",
+                            "license": [
+                                {
+                                    "license": "cc_by",
+                                    "license_phrases": [
+                                        {
+                                            "value": "cc_by",
+                                            "language": "en",
+                                            "phrase": "CC BY"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "location": {
+                                "location_phrases": [
+                                    {
+                                        "phrase": "Any Website",
+                                        "value": "any_website",
+                                        "language": "en"
+                                    },
+                                    {
+                                        "phrase": "Named Repository",
+                                        "value": "named_repository",
+                                        "language": "en"
+                                    },
+                                    {
+                                        "value": "this_journal",
+                                        "language": "en",
+                                        "phrase": "Journal Website"
+                                    }
+                                ],
+                                "named_repository": [
+                                    "PubMed Central"
+                                ],
+                                "location": [
+                                    "any_website",
+                                    "named_repository",
+                                    "this_journal"
+                                ]
+                            },
+                            "id": 472,
+                            "publisher_deposit": [
+                                {
+                                    "system_metadata": {
+                                        "uri": "https://v2.sherpa.ac.uk/id/repository/267",
+                                        "id": 267
+                                    },
+                                    "repository_metadata": {
+                                        "name": [
+                                            {
+                                                "language_phrases": [
+                                                    {
+                                                        "value": "en",
+                                                        "language": "en",
+                                                        "phrase": "English"
+                                                    }
+                                                ],
+                                                "name": "PubMed Central",
+                                                "language": "en",
+                                                "acronym": "PMC"
+                                            }
+                                        ],
+                                        "type_phrases": [
+                                            {
+                                                "phrase": "Disciplinary",
+                                                "language": "en",
+                                                "value": "disciplinary"
+                                            }
+                                        ],
+                                        "type": "disciplinary",
+                                        "url": "https://www.ncbi.nlm.nih.gov/pmc/"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "license": [
+                                {
+                                    "license_phrases": [
+                                        {
+                                            "phrase": "CC BY",
+                                            "value": "cc_by",
+                                            "language": "en"
+                                        }
+                                    ],
+                                    "license": "cc_by"
+                                }
+                            ],
+                            "article_version": [
+                                "submitted",
+                                "accepted"
+                            ],
+                            "additional_oa_fee": "no",
+                            "id": 5734,
+                            "location": {
+                                "location_phrases": [
+                                    {
+                                        "phrase": "Any Website",
+                                        "language": "en",
+                                        "value": "any_website"
+                                    },
+                                    {
+                                        "value": "named_repository",
+                                        "language": "en",
+                                        "phrase": "Named Repository"
+                                    },
+                                    {
+                                        "language": "en",
+                                        "value": "non_commercial_repository",
+                                        "phrase": "Non-Commercial Repository"
+                                    }
+                                ],
+                                "location": [
+                                    "any_website",
+                                    "named_repository",
+                                    "non_commercial_repository"
+                                ],
+                                "named_repository": [
+                                    "PubMed Central",
+                                    "arXiv",
+                                    "RePEC"
+                                ]
+                            },
+                            "conditions": [
+                                "Published source must be acknowledged with citation",
+                                "Must link to published article with DOI"
+                            ],
+                            "article_version_phrases": [
+                                {
+                                    "phrase": "Submitted",
+                                    "value": "submitted",
+                                    "language": "en"
+                                },
+                                {
+                                    "value": "accepted",
+                                    "language": "en",
+                                    "phrase": "Accepted"
+                                }
+                            ],
+                            "additional_oa_fee_phrases": [
+                                {
+                                    "phrase": "No",
+                                    "language": "en",
+                                    "value": "no"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": 2775
+                }
+            ],
+            "type_phrases": [
+                {
+                    "phrase": "Journal",
+                    "language": "en",
+                    "value": "journal"
+                }
+            ],
+            "type": "journal",
+            "issns": [
+                {
+                    "type_phrases": [
+                        {
+                            "value": "print",
+                            "language": "en",
+                            "phrase": "Print"
+                        }
+                    ],
+                    "issn": "2161-8313",
+                    "type": "print"
+                },
+                {
+                    "type_phrases": [
+                        {
+                            "phrase": "Electronic",
+                            "value": "electronic",
+                            "language": "en"
+                        }
+                    ],
+                    "issn": "2156-5376",
+                    "type": "electronic"
+                }
+            ],
+            "title": [
+                {
+                    "language_phrases": [
+                        {
+                            "phrase": "English",
+                            "language": "en",
+                            "value": "en"
+                        }
+                    ],
+                    "title": "Advances in Nutrition",
+                    "language": "en"
+                }
+            ],
+            "id": 25273,
+            "publishers": [
+                {
+                    "relationship_type": "commercial_publisher",
+                    "publisher": {
+                        "uri": "https://v2.sherpa.ac.uk/id/publisher/30",
+                        "id": 30,
+                        "name": [
+                            {
+                                "language": "en",
+                                "name": "Elsevier",
+                                "language_phrases": [
+                                    {
+                                        "value": "en",
+                                        "language": "en",
+                                        "phrase": "English"
+                                    }
+                                ]
+                            }
+                        ],
+                        "country": "us",
+                        "country_phrases": [
+                            {
+                                "language": "en",
+                                "value": "us",
+                                "phrase": "United States of America"
+                            }
+                        ],
+                        "imprints_id": [
+                            131,
+                            265,
+                            61607
+                        ],
+                        "url": "http://www.elsevier.com/",
+                        "publication_count": 2337
+                    },
+                    "relationship_type_phrases": [
+                        {
+                            "phrase": "Commercial Publisher",
+                            "value": "commercial_publisher",
+                            "language": "en"
+                        }
+                    ]
+                }
+            ],
+            "listed_in_doaj": "no",
+            "url": "https://www.sciencedirect.com/journal/advances-in-nutrition",
+            "system_metadata": {
+                "date_modified": "2025-06-13 14:41:05",
+                "id": 25273,
+                "publicly_visible_phrases": [
+                    {
+                        "value": "yes",
+                        "language": "en",
+                        "phrase": "Yes"
+                    }
+                ],
+                "date_created": "2013-08-29 13:34:20",
+                "publicly_visible": "yes",
+                "uri": "https://v2.sherpa.ac.uk/id/publication/25273"
+            }
+        }
+    ]
+}

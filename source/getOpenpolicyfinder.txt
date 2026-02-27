@@ -1,17 +1,17 @@
-(ISSN as text) =>
+(ISSN as text, apikey as text) =>
     let
     // Open Policy Finder APIからISSNを送信してJSONを取得
         queryparameter = [ #"item-type" = "publication", format = "Json" , identifier = ISSN ],
-        SherpaSource = Web.Contents("https://api.openpolicyfinder.jisc.ac.uk" ,
+        OpfSource = Web.Contents("https://api.openpolicyfinder.jisc.ac.uk" ,
         [   RelativePath="retrieve_by_id",
             Headers = [#"x-api-key" = apikey],
             Query =  queryparameter,
             ManualStatusHandling={400, 404, 500}
             ]
         ),
-        status = Value.Metadata(SherpaSource)[Response.Status], 
-    // [items]{0}[system_metadata][uri]、ポリシーが4あるURLを取得
-        oauri = Json.Document(SherpaSource)[items]{0}[system_metadata][uri]
+        status = Value.Metadata(OpfSource)[Response.Status],
+    // [items]{0}[system_metadata][uri]、ポリシーがあるURLを取得
+        oauri = Json.Document(OpfSource)[items]{0}[system_metadata][uri]
     in
-        if status = 404 then null else 
+        if status = 404 then null else
         oauri

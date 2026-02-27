@@ -17,8 +17,9 @@ let
          "Unpaywall.oa_location.license","Unpaywall.oa_location.url",  "Unpaywall.oa_location.url_for_pdf"
          }),
     変更された型3 = Table.TransformColumnTypes(#"展開された getUnpaywall",{{"Unpaywall.published_date", type date}}),
-    //カスタム関数 getSherpaにISSNを渡してデータ（URL)を取得、列uriとして追加する
-    呼び出されたカスタム関数1 = Table.AddColumn(変更された型3, "uri", each getSherpa([Unpaywall.issn])),
+    //カスタム関数 getOpenpolicyfinderにISSNとAPIキーを渡してデータ（URL)を取得、列uriとして追加する
+    OpfApiKey = Excel.CurrentWorkbook(){[Name="OpfApiKey"]}[Content]{0}[Column1],
+    呼び出されたカスタム関数1 = Table.AddColumn(変更された型3, "uri", each getOpenpolicyfinder([Unpaywall.issn], OpfApiKey)),
     // エラーは N/A に置換
     置換されたエラー2 = Table.ReplaceErrorValues(呼び出されたカスタム関数1, {{"uri", "N/A"}}),
     //列を並び替えて uri を2列目に
