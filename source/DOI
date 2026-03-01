@@ -2,8 +2,22 @@ let
     // テーブルDOIからDOIを取得
     ソース = Excel.CurrentWorkbook(){[Name="DOI"]}[Content],
     変更された型 = Table.TransformColumnTypes(ソース,{{"DOI", type text}}),
+    // DOIを正規化: URL形式 (https://doi.org/...) や DOI:プレフィックスを prefix/suffix 形式に変換
+    正規化されたDOI = Table.TransformColumns(変更された型, {{"DOI",
+        each
+            let
+                trimmed = Text.Trim(_),
+                lower = Text.Lower(trimmed),
+                result =
+                    if Text.StartsWith(lower, "https://doi.org/") then Text.Middle(trimmed, Text.Length("https://doi.org/"))
+                    else if Text.StartsWith(lower, "http://doi.org/") then Text.Middle(trimmed, Text.Length("http://doi.org/"))
+                    else if Text.StartsWith(lower, "doi:") then Text.Middle(trimmed, Text.Length("doi:"))
+                    else trimmed
+            in
+                result,
+        type text}}),
     // カスタム関数 getUnpaywallにDOIを渡してデータを取得
-    呼び出されたカスタム関数 = Table.AddColumn(変更された型, "getUnpaywall", each getUnpaywall([DOI])),
+    呼び出されたカスタム関数 = Table.AddColumn(正規化されたDOI, "getUnpaywall", each getUnpaywall([DOI])),
     // エラーはnullに置換
     置換されたエラー = Table.ReplaceErrorValues(呼び出されたカスタム関数, {{"getUnpaywall", null}}),
     // データをテーブルに展開
@@ -18,7 +32,6 @@ let
          }),
     変更された型3 = Table.TransformColumnTypes(#"展開された getUnpaywall",{{"Unpaywall.published_date", type date}}),
     //カスタム関数 getOpenpolicyfinderにISSNとAPIキーを渡してデータ（URL)を取得、列uriとして追加する
-    OpfApiKey = Excel.CurrentWorkbook(){[Name="OpfApiKey"]}[Content]{0}[Column1],
     呼び出されたカスタム関数1 = Table.AddColumn(変更された型3, "uri", each getOpenpolicyfinder([Unpaywall.issn], OpfApiKey)),
     // エラーは N/A に置換
     置換されたエラー2 = Table.ReplaceErrorValues(呼び出されたカスタム関数1, {{"uri", "N/A"}}),

@@ -1,0 +1,152 @@
+{
+   "id": "integer: the ID for this item",
+   "title": [
+      {
+         "title": "text: the title of the publication",
+         "acronym": "text: a short-form for the title",
+         "preferred": "value('title', 'acronym'): which is preferred",
+         "language": "value(two-letter language code): the language of this value"
+         // Note that this is a multilingual field and should only have one entry per language.
+      }
+   ],
+   "issns": [
+      {
+         "type": "value('print','electronic','legacy'): the type of the issn",
+         "issn": "text: the issn of the publication"
+      }
+   ],
+   "type": "value('journal', 'conference_proceedings', 'monographic_series'): the type of the publication",
+   "notes": "text: notes about the publication record",
+   "url": "URL: the url of the publication",
+   "listed_in_doaj": "value('yes','no'): is the publication listed in DOAJ",
+   "tj_status": [
+      "value('plan_s_approved','jisc_approved'): set when a publication is a transformative journal approved by Plan S and/or Jisc"
+   ],
+   "tj_status_phrases": [
+      {
+         "language": "two letter language code",
+         "phrase": "value('Plan S Approved','Jisc Approved')",
+         "value": "value('plan_s_approved','jisc_approved')"
+      }
+   ],
+   "listed_in_doaj_phrases": [
+      {
+         "phrase": "Yes",
+         "language": "en",
+         "value": "yes"
+      }
+   ],
+   "publishers": [
+      {
+         "relationship_type": "value('university_publisher', 'commercial_publisher', 'society_publisher', 'government_publisher', 'other')",
+         "relationship_type_phrases": [
+            {
+               "language": "two letter language code",
+               "phrase": "text: the phrase",
+               "value": "value('university_publisher', 'commercial_publisher', 'society_publisher', 'government_publisher', 'other')"
+            }
+         ],
+         "publisher": {
+            "id": "integer: the ID of the publisher",
+            "name": "text: the title of the publisher",
+            "issns": [
+               "text: the ISSNs of the publisher"
+            ],
+            "type": "text",
+            "uri": "URL: the address within open policy finder of the publisher",
+            "imprint_of_id": "integer: the ID of the parent publisher",
+            "publication_count": "integer: the number of publication records in open policy finder for this publisher",
+            "country": "value(two letter country code): the country of the publisher",
+            "country_phrases": [
+               {
+                  "value": "two letter country code",
+                  "language": "two letter language code",
+                  "phrase": "text: the country phrase"
+               }
+            ]
+         }
+      }
+   ],
+   "publisher_policy": [
+      {
+         "id": "integer: the ID of the policy",
+         "internal_moniker": "text: internal moniker for the policy",
+         "publication_count": "integer: the number of publication records in open policy finder for this policy",
+         "permitted_oa": [
+            {
+               "article_version_phrases": [
+                  {
+                     "language": "two letter language code",
+                     "phrase": "text: the phrase",
+                     "value": "text: the value"
+                  }
+               ],
+               "copyright_owner": "text: the owner of the copyright",
+               "license": [
+                  {
+                     "license_phrases": [
+                        {
+                           "phrase": "text: the license phrase",
+                           "language": "en",
+                           "value": "text: the license value"
+                        }
+                     ],
+                     "version": "text: the license version",
+                     "license": "text: the license type"
+                  }
+               ],
+               "additional_oa_fee": "value('yes', 'no'): whether an additional OA fee is required",
+               "copyright_owner_phrases": [
+                  {
+                     "language": "two letter language code",
+                     "phrase": "text: the copyright owner phrase",
+                     "value": "text: the copyright owner value"
+                  }
+               ],
+               "location": {
+                  "location_phrases": [
+                     {
+                        "language": "two letter language code",
+                        "phrase": "text: the location phrase",
+                        "value": "text: the location value"
+                     }
+                  ],
+                  "location": [
+                     "text: the location value"
+                  ]
+               },
+               "id": "integer: the ID of the permitted OA",
+               "article_version": [
+                  "text: the article version"
+               ],
+               "additional_oa_fee_phrases": [
+                  {
+                     "language": "two letter language code",
+                     "phrase": "text: the additional OA fee phrase",
+                     "value": "text: the additional OA fee value"
+                  }
+               ],
+               "conditions": [
+                  "text: conditions for OA"
+               ]
+            }
+         ],
+         "urls": [
+            {
+               "description": "text: description of the document linked to",
+               "type": "value('policy', 'statement', 'guidance', 'information'): the type of document",
+               "url": "URL: the address of the document"
+            }
+         ],
+         "open_access_prohibited": "value('yes', 'no'): whether open access is prohibited",
+         "open_access_prohibited_phrases": [
+            {
+               "language": "two letter language code",
+               "phrase": "text: the phrase",
+               "value": "value('yes', 'no')"
+            }
+         ],
+         "uri": "URL: the address within open policy finder of the policy"
+      }
+   ]
+}

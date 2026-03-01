@@ -1,0 +1,73 @@
+{
+    "id": "Integer: the ID for this item",
+    "name": [
+        {
+            "name": "text: the name of the publisher",
+            "acronym": "text: a short-form for the name",
+            "preferred": "value('name', 'acronym'): which is preferred",
+            "language": "value(two-letter language code): the language of this value"
+        }
+    ],
+    "url": "URL: the url of the publisher",
+    "identifiers": [
+        {
+            "identifier": "text: the identifier",
+            "type": "value('ror', 'other'): the identifier type"
+        }
+    ],
+    "country": "value(two letter country code): the country of the publisher",
+    "notes": "text: notes about the publisher record",
+    "imprint_of": {
+        "id": "integer: the ID of the imprint",
+        "name": "text: the name of the imprint",
+        "url": "URL: the url of the imprint",
+        "country": "value(two letter country code): the country of the imprint",
+        "notes": "text: notes about the imprint record",
+        "imprint_of_id": "integer: the ID of the parent publisher",
+        "imprints_id": "integer: the ID of the imprints",
+        "publication_count": "integer: the number of publication records in open policy finder for this imprint",
+        "uri": "URL: the address within open policy finder of the imprint"
+    },
+    "imprints": [
+        {
+            "id": "integer: the ID of the imprint",
+            "name": "text: the name of the imprint",
+            "url": "URL: the url of the imprint",
+            "country": "value(two letter country code): the country of the imprint",
+            "notes": "text: notes about the imprint record",
+            "imprint_of_id": "integer: the ID of the parent publisher",
+            "imprints_id": "integer: the ID of the imprints",
+            "publication_count": "integer: the number of publication records in open policy finder for this imprint",
+            "uri": "URL: the address within open policy finder of the imprint"
+        }
+    ],
+    "policies": [
+        {
+            "id": "integer: the ID of the policy",
+            "internal_moniker": "text: internal moniker for the policy",
+            "publication_count": "integer: the number of publication records in open policy finder for this policy",
+            "permitted_oa": "value('yes', 'no'): whether open access is permitted",
+            "urls": [
+                {
+                    "description": "text: description of the document linked to",
+                    "type": "value('policy', 'statement', 'guidance', information'): the type of document",
+                    "url": "URL: the address of the document"
+                }
+            ],
+            "open_access_prohibited": "value('yes', 'no'): whether open access is prohibited",
+            "uri": "URL: the address within open policy finder of the policy"
+        }
+    ],
+    "publication_count": "integer: the number of publication records in open policy finder for this publisher",
+    "publications": [
+        {
+            "id": "integer: the ID of the publication",
+            "title": "text: the title of the publication",
+            "issns": [
+                "text: the ISSNs of the publication"
+            ],
+            "type": "value('journal', 'book', 'conference_proceeding', 'other'): the type of publication",
+            "uri": "URL: the address within open policy finder of the publication"
+        }
+    ]
+}
