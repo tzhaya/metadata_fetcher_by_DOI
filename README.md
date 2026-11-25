@@ -65,7 +65,7 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|
 |DOI|OAポリシー記載のURL(Sherpa Service)|論文掲載誌のISSN(Unpaywall)|掲載誌名(Unpaywall)|論題(Unpaywall)|ジャンル(Unpaywall)|発行日(Unpaywall)|DOIの先の論文がOAか否か（OAなら TRUE）(Unpaywall)|OAのステータス（gold, hybrid, bronze, green or closed）(Unpaywall)|DOIの先の論文がOAの場合のライセンス(Unpaywall)|OAの場合のDOI解決先URL(Unpaywall)|OAの場合のPDFのURL(Unpaywall)|ポリシー(Policy Checker (SCPJ))|掲載誌名(Policy Checker (SCPJ))|出版社版利用可否(Policy Checker (SCPJ))|公開場所の指定(Policy Checker (SCPJ))|公開条件(Policy Checker (SCPJ))|備考(Policy Checker (SCPJ))|
 |10.2964/jsik_2016_001|N/A|0917-1436|Joho Chishiki Gakkaishi|Structure analysis and a schema definition method for creating Linked Open Data from complex information resources|journal-article|2016/1/1|TRUE|bronze| |https://www.jstage.jst.go.jp/article/jsik/26/1/26_2016_001/_pdf|https://www.jstage.jst.go.jp/article/jsik/26/1/26_2016_001/_pdf|Green(査読前・査読後どちらでも認める)|情報知識学会誌|利用可能です|著者個人のWebサイト, 機関リポジトリ, 研究資金助成機関のWebサイト, 非営利電子論文アーカイブ|出典表示を行うこと|　|
-|10.1038/7036|https://v2.sherpa.ac.uk/id/publication/1643|1087-0156|Nature Biotechnology|Improving plant drought, salt, and freezing tolerance by gene transfer of a single stress-inducible transcription factor|journal-article|1999/3/FALSE|closed||||ヒットなし|||||
+|10.1038/7036|https://openpolicyfinder.jisc.ac.uk/publication/1643|1087-0156|Nature Biotechnology|Improving plant drought, salt, and freezing tolerance by gene transfer of a single stress-inducible transcription factor|journal-article|1999/3/FALSE|closed||||ヒットなし|||||
 
 ## 動作の概要
 1. テーブル DOI にあるDOIを取得します
@@ -94,7 +94,6 @@ DOIがわかっている論文が、オープンアクセスかどうかを確�
   - 世界中の出版社のOA（オープンアクセス）ポリシーを集約・分析し、各ジャーナルのセルフアーカイビングの許諾、著者の権利条項などの概要を閲覧・検索できるオンラインツールSherpa ROMEOを含む検索サービスです。英国のJiscが運営しています。2024年11月4日に Open policy finder v1.0 としてリニューアルされました。
   -  Open policy finder  https://openpolicyfinder.jisc.ac.uk/
   -  The API https://openpolicyfinder.jisc.ac.uk/help/developers
-  -  Sherpa Legacy API Documentation :  https://openpolicyfinder.jisc.ac.uk/sherpa_legacy_api.pdf
 - 日本の学協会の著作権ポリシー確認ツール（島根大学附属図書館） : https://app.lib.shimane-u.ac.jp/policy_checker/scpj.php
   - 学協会著作権ポリシーデータベースの情報をソースとして、日本の学協会著作権ポリシーについてISSNやNCIDから検索できるツールです。
 - 学協会著作権ポリシーデータベース（オープンアクセスリポジトリ推進協会（JPCOAR））： http://id.nii.ac.jp/1458/00000186/
